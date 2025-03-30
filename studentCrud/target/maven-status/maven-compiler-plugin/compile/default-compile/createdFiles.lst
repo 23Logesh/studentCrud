@@ -1,0 +1,8 @@
+com\student\studentCrud\StudentCrudApplication.class
+com\student\studentCrud\dto\Student.class
+com\student\studentCrud\util\ResponseStructure.class
+com\student\studentCrud\repository\StudentRepo.class
+com\student\studentCrud\exception\ExceptionHandler.class
+com\student\studentCrud\controller\StudentController.class
+com\student\studentCrud\service\StudentService.class
+com\student\studentCrud\serviceImp\StudentServiceImp.class
