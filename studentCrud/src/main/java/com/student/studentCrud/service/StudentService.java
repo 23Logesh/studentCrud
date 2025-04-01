@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface StudentService {
 
-    ResponseEntity<Student> saveStudent(Student student);
+    Student saveStudent(Student student);
 
-    ResponseEntity<Student> findStudent(int studentId);
+    Student findStudent(int studentId);
 
-    ResponseEntity<Student> updateStudent(Student student);
+    Student updateStudent(Student student);
 
-    ResponseEntity<Student> deleteStudent(int studentId);
+    Student deleteStudent(int studentId);
 
-    ResponseEntity<List<Student>> findAll();
+    List<Student> findAll();
 
-    ResponseEntity<Student> findByPhoneNo(String studentPhoneNo);
+    Student findByPhoneNo(String studentPhoneNo);
 
-    ResponseEntity<Student> updateStudentName(int studentId, String studentName);
+    Student updateStudentName(int studentId, String studentName);
 }
