@@ -1,23 +1,23 @@
 package com.student.studentCrud.service;
 
-import com.student.studentCrud.dto.Student;
-import org.springframework.http.ResponseEntity;
+
+import com.student.studentCrud.dto.Student_Dto;
 
 import java.util.List;
 
 public interface StudentService {
 
-    Student saveStudent(Student student);
+    Student_Dto saveStudent(Student_Dto studentDto);
 
-    Student findStudent(int studentId);
+    Student_Dto findStudent(int studentId);
 
-    Student updateStudent(Student student);
+    Student_Dto updateStudent(Student_Dto studentDto);
 
-    Student deleteStudent(int studentId);
+    Student_Dto deleteStudent(int studentId);
 
-    List<Student> findAll();
+    List<Student_Dto> findAll();
 
-    Student findByPhoneNo(String studentPhoneNo);
+    Student_Dto findByPhoneNo(String studentPhoneNo);
 
-    Student updateStudentName(int studentId, String studentName);
+    Student_Dto updateStudentName(int studentId, String studentName);
 }
