@@ -1,7 +1,7 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.Entity.Student_Entity;
-import com.student.studentCrud.dto.Student_Dto;
+import com.student.studentCrud.Entity.StudentEntity;
+import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.StudentRepo;
 import com.student.studentCrud.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,22 +20,22 @@ public class StudentServiceImp implements StudentService {
     @Autowired
     private StudentRepo studentRepo;
 
-
-    private final ModelMapper modelMapper= new ModelMapper();
+    @Autowired
+    private  ModelMapper modelMapper;
 
     @Override
-    public Student_Dto saveStudent(Student_Dto studentDto) {
+    public StudentDto saveStudent(StudentDto studentDto) {
 
-        Student_Dto savedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
+        StudentDto savedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
         log.info("[saveStudent] SUCCESS - Student saved with ID: {}, Name: {}", savedStudent.getStudentId(), savedStudent.getStudentName());
         return savedStudent;
     }
 
     @Override
-    public Student_Dto findStudent(int studentId) {
-        Optional<Student_Entity> studentOpt = studentRepo.findById(studentId);
+    public StudentDto findStudent(int studentId) {
+        Optional<StudentEntity> studentOpt = studentRepo.findById(studentId);
         log.info("[findStudent] SUCCESS - Found Student with ID: {}", studentId);
-        return studentOpt.map(Student_Entity -> modelMapper.map(Student_Entity, Student_Dto.class))
+        return studentOpt.map(StudentEntity -> modelMapper.map(StudentEntity, StudentDto.class))
                 .orElseGet(() -> {
                     log.warn("[findStudent] FAILED - No Student found with ID: {}", studentId);
                     return null;
@@ -43,15 +43,15 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public List<Student_Dto> findAll() {
-        List<Student_Dto> students = studentRepo.findAll().stream().map(this::convertEntityToDto).toList();
+    public List<StudentDto> findAll() {
+        List<StudentDto> students = studentRepo.findAll().stream().map(this::convertEntityToDto).toList();
         log.info("[findAll] SUCCESS - Retrieved {} students from database", students.size());
         return students;
     }
 
     @Override
-    public Student_Dto findByPhoneNo(String studentPhoneNo) {
-        Student_Dto studentDto = convertEntityToDto(studentRepo.findByStudentPhoneNo(studentPhoneNo));
+    public StudentDto findByPhoneNo(String studentPhoneNo) {
+        StudentDto studentDto = convertEntityToDto(studentRepo.findByStudentPhoneNo(studentPhoneNo));
         if (studentDto != null) {
             log.info("[findByPhoneNo] SUCCESS - Found Student with Phone Number: {}", studentPhoneNo);
             return studentDto;
@@ -62,14 +62,14 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public Student_Dto updateStudent(Student_Dto studentDto) {
+    public StudentDto updateStudent(StudentDto studentDto) {
         if (studentDto == null || studentDto.getStudentId() == 0) {
             log.warn("[updateStudent] FAILED - Invalid student data provided");
             return null;
         }
 
         if (studentRepo.existsById(studentDto.getStudentId())) {
-            Student_Dto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
+            StudentDto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
             log.info("[updateStudent] SUCCESS - Updated Student ID: {}, Name: {}", updatedStudent.getStudentId(), updatedStudent.getStudentName());
             return updatedStudent;
         } else {
@@ -79,11 +79,11 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public Student_Dto updateStudentName(int studentId, String studentName) {
+    public StudentDto updateStudentName(int studentId, String studentName) {
         return Optional.ofNullable(findStudent(studentId))
                 .map(student -> {
                     student.setStudentName(studentName);
-                    Student_Dto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(student)));
+                    StudentDto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(student)));
                     log.info("[updateStudentName] SUCCESS - Student ID: {} Name changed to: {}", studentId, studentName);
                     return updatedStudent;
                 })
@@ -94,7 +94,7 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public Student_Dto deleteStudent(int studentId) {
+    public StudentDto deleteStudent(int studentId) {
         return studentRepo.findById(studentId)
                 .map(student -> {
                     studentRepo.deleteById(studentId);
@@ -107,12 +107,12 @@ public class StudentServiceImp implements StudentService {
                 });
     }
 
-    public Student_Dto convertEntityToDto(Student_Entity studentEntity) {
-        return modelMapper.map(studentEntity, Student_Dto.class);
+    public StudentDto convertEntityToDto(StudentEntity studentEntity) {
+        return modelMapper.map(studentEntity, StudentDto.class);
     }
 
-    public Student_Entity convertDtoToEntity(Student_Dto studentDto) {
-        return modelMapper.map(studentDto, Student_Entity.class);
+    public StudentEntity convertDtoToEntity(StudentDto studentDto) {
+        return modelMapper.map(studentDto, StudentEntity.class);
     }
 
 }
