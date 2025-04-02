@@ -21,7 +21,7 @@ public class StudentServiceImp implements StudentService {
     private StudentRepo studentRepo;
 
     @Autowired
-    private  ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Override
     public StudentDto saveStudent(StudentDto studentDto) {
