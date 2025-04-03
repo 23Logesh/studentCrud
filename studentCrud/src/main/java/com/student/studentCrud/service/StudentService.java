@@ -17,7 +17,5 @@ public interface StudentService {
 
     List<StudentDto> findAll();
 
-    StudentDto findByPhoneNo(String studentPhoneNo);
-
     StudentDto updateStudentName(int studentId, String studentName);
 }

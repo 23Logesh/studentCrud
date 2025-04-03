@@ -44,13 +44,6 @@ public class StudentController {
         return response;
     }
 
-    @GetMapping("/findByPhone/{studentPhoneNo}")
-    public ResponseEntity<StudentDto> findByPhoneNo(@PathVariable String studentPhoneNo) {
-        log.info("[findByPhoneNo] Received API request to find student with phone number: {}", studentPhoneNo);
-        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.findByPhoneNo(studentPhoneNo));
-        log.info("[findByPhoneNo] Response: {}", response.getStatusCode());
-        return response;
-    }
 
     @PutMapping("/update")
     public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto student) {

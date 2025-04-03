@@ -1,5 +1,6 @@
 package com.student.studentCrud.Entity;
 
+import com.student.studentCrud.util.AttendanceStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

@@ -50,18 +50,6 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public StudentDto findByPhoneNo(String studentPhoneNo) {
-        StudentDto studentDto = convertEntityToDto(studentRepo.findByStudentPhoneNo(studentPhoneNo));
-        if (studentDto != null) {
-            log.info("[findByPhoneNo] SUCCESS - Found Student with Phone Number: {}", studentPhoneNo);
-            return studentDto;
-        } else {
-            log.warn("[findByPhoneNo] FAILED - No Student found with Phone Number: {}", studentPhoneNo);
-            return null;
-        }
-    }
-
-    @Override
     public StudentDto updateStudent(StudentDto studentDto) {
         if (studentDto == null || studentDto.getStudentId() == 0) {
             log.warn("[updateStudent] FAILED - Invalid student data provided");
