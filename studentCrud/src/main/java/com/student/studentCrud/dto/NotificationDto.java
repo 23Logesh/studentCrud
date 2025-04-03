@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class NotificationDto {
     private Long id;
 
-    private StudentEntity student;
+    private StudentDto student;
 
     private String message;
     private LocalDateTime timestamp;

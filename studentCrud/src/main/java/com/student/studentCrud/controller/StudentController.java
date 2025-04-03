@@ -37,7 +37,7 @@ public class StudentController {
     @GetMapping("/findAll")
     public ResponseEntity<List<StudentDto>> getAll() {
         log.info("[getAll] Received API request to retrieve all students");
-        ResponseEntity<List<StudentDto>> response = ResponseEntity.ok(studentService.findAll());
+        ResponseEntity<List<StudentDto>> response = ResponseEntity.ok(studentService.findAllStudent());
         List<StudentDto> students = response.getBody();
         int studentCount = (students != null) ? students.size() : 0;
         log.info("[getAll] Found {} students. Response: {}", studentCount, response.getStatusCode());

@@ -1,5 +1,6 @@
 package com.student.studentCrud.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,9 +17,9 @@ public class StudentEntity {
     private String email;
     private String className;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student")
     private List<AttendanceEntity> attendanceRecords;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student")
     private List<GradeEntity> grades;
 }

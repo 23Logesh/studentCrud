@@ -15,7 +15,7 @@ public interface StudentService {
 
     StudentDto deleteStudent(long rollNumber);
 
-    List<StudentDto> findAll();
+    List<StudentDto> findAllStudent();
 
     StudentDto updateStudentName(long rollNumber, String studentName);
 }

@@ -1,12 +1,10 @@
 package com.student.studentCrud.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.student.studentCrud.Entity.AttendanceEntity;
 import com.student.studentCrud.Entity.GradeEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -18,7 +16,7 @@ public class StudentDto {
     private String email;
     private String className;
 
-    private List<AttendanceEntity> attendanceRecords;
+    private List<AttendanceDto> attendanceRecords;
 
-    private List<GradeEntity> grades;
+    private List<GradeDto> grades;
 }

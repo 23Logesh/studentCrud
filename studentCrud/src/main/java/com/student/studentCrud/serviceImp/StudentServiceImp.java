@@ -43,7 +43,7 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public List<StudentDto> findAll() {
+    public List<StudentDto> findAllStudent() {
         List<StudentDto> students = studentRepo.findAll().stream().map(this::convertEntityToDto).toList();
         log.info("[findAll] SUCCESS - Retrieved {} students from database", students.size());
         return students;

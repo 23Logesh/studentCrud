@@ -1,8 +1,10 @@
 package com.student.studentCrud.Entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class GradeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

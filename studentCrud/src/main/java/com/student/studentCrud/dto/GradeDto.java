@@ -7,7 +7,7 @@ import lombok.Data;
 public class GradeDto {
     private Long id;
 
-    private StudentEntity student;
+    private StudentDto student;
 
     private String subject;
     private double score;
