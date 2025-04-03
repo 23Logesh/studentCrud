@@ -6,21 +6,23 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int studentId;
+    private Long id;
 
-    @NotBlank(message = "Student name cannot be blank")
-    @Column(nullable = false)
-    private String studentName;
+    private String name;
+    private String email;
+    private String rollNumber;
+    private String className;
 
-    @Pattern(regexp = "\\d{10}", message = "Student Number should be 10 digits")
-    @Column(unique = true, nullable = false)
-    private String studentPhoneNo;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<AttendanceEntity> attendanceRecords;
 
-    private LocalDate enrollmentDate;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<GradeEntity> grades;
 }
