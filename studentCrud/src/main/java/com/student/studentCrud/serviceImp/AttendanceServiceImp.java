@@ -1,8 +1,8 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.Entity.AttendanceEntity;
 import com.student.studentCrud.Entity.StudentEntity;
+import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.AttendanceRepo;
 import com.student.studentCrud.repository.StudentRepo;
@@ -76,9 +76,10 @@ public class AttendanceServiceImp implements AttendanceService {
 
     @Override
     public AttendanceDto updateAttendance(AttendanceDto attendanceDto) {
-        if(attendanceRepository.existsById(attendanceDto.getId()))
-        {AttendanceEntity updatedAttendance = attendanceRepository.save(convertDtoToEntity(attendanceDto));
-        return convertEntityToDto(updatedAttendance);}
+        if (attendanceRepository.existsById(attendanceDto.getId())) {
+            AttendanceEntity updatedAttendance = attendanceRepository.save(convertDtoToEntity(attendanceDto));
+            return convertEntityToDto(updatedAttendance);
+        }
         return null;
     }
 

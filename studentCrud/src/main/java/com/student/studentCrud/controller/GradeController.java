@@ -1,5 +1,6 @@
 package com.student.studentCrud.controller;
 
+import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.service.GradeService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,12 @@ public class GradeController {
         log.info("[getGrade] Response: {}", response.getStatusCode());
         return response;
     }
+    @GetMapping("/student/{rollNumber}")
+    public ResponseEntity<List<GradeDto>> getAttendanceByStudent(@PathVariable long rollNumber) {
+        log.info("Fetching Grade records for student ID: {}", rollNumber);
+        return ResponseEntity.ok(gradeService.findGradeByStudent(rollNumber));
+    }
+
 
     @GetMapping("/findAll")
     public ResponseEntity<List<GradeDto>> getAllGrades() {
@@ -53,8 +60,8 @@ public class GradeController {
 
     @PutMapping("/update/score")
     public ResponseEntity<GradeDto> updateScore(@RequestParam long gradeId, @RequestParam double score) {
-        log.info("[updateScore] Received API request to update score: {} for gradeId: {}", score,gradeId);
-        ResponseEntity<GradeDto> response = ResponseEntity.ok(gradeService.updateScore(gradeId,score));
+        log.info("[updateScore] Received API request to update score: {} for gradeId: {}", score, gradeId);
+        ResponseEntity<GradeDto> response = ResponseEntity.ok(gradeService.updateScore(gradeId, score));
         log.info("[updateScore] Response: {}", response.getStatusCode());
         return response;
     }

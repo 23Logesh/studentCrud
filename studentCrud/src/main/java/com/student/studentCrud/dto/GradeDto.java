@@ -1,6 +1,5 @@
 package com.student.studentCrud.dto;
 
-import com.student.studentCrud.Entity.StudentEntity;
 import lombok.Data;
 
 @Data

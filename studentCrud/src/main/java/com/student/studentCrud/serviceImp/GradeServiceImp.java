@@ -1,9 +1,7 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.Entity.AttendanceEntity;
 import com.student.studentCrud.Entity.GradeEntity;
 import com.student.studentCrud.Entity.StudentEntity;
-import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.GradeRepo;
@@ -55,7 +53,7 @@ public class GradeServiceImp implements GradeService {
     @Override
     public GradeDto updateScore(long gradeId, double score) {
         GradeDto gradeDto = findGrade(gradeId);
-        if (gradeDto!=null) {
+        if (gradeDto != null) {
             gradeDto.setScore(score);
             GradeDto updatedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             log.info("[updateGrade] SUCCESS - Updated Grade ID: {}, Score: {}",
@@ -66,6 +64,14 @@ public class GradeServiceImp implements GradeService {
             return null;
         }
 
+    }
+
+    @Override
+    public List<GradeDto> findGradeByStudent(long rollNumber) {
+        return gradeRepo.findByStudentRollNumber(rollNumber)
+                .stream()
+                .map(this::convertEntityToDto)
+                .toList();
     }
 
     @Override

@@ -16,4 +16,6 @@ public interface GradeService {
     List<GradeDto> findAllGrade();
 
     GradeDto updateScore(long gradeId, double score);
+
+    List<GradeDto> findGradeByStudent(long rollNumber);
 }
