@@ -17,9 +17,4 @@ public class StudentEntity {
     private String email;
     private String className;
 
-    @OneToMany(mappedBy = "student")
-    private List<AttendanceEntity> attendanceRecords;
-
-    @OneToMany(mappedBy = "student")
-    private List<GradeEntity> grades;
 }

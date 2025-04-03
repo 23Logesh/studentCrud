@@ -101,13 +101,9 @@ public class GradeServiceImp implements GradeService {
     }
 
     private GradeDto convertEntityToDto(GradeEntity gradeEntity) {
-        List<AttendanceDto> attendanceDtoList = gradeEntity.getStudent().getAttendanceRecords().stream()
-                .map(data -> modelMapper.map(data, AttendanceDto.class)).toList();
-        List<GradeDto> gradeDtoList = gradeEntity.getStudent().getGrades().stream()
-                .map(data -> modelMapper.map(data, GradeDto.class)).toList();
+
         StudentDto studentDto = modelMapper.map(gradeEntity.getStudent(), StudentDto.class);
-        studentDto.setAttendanceRecords(attendanceDtoList);
-        studentDto.setGrades(gradeDtoList);
+
         GradeDto gradeDto = modelMapper.map(gradeEntity, GradeDto.class);
         gradeDto.setStudent(studentDto);
         return gradeDto;
@@ -115,13 +111,9 @@ public class GradeServiceImp implements GradeService {
     }
 
     private GradeEntity convertDtoToEntity(GradeDto gradeDto) {
-        List<AttendanceEntity> attendanceEntitiesList = gradeDto.getStudent().getAttendanceRecords().stream()
-                .map(data -> modelMapper.map(data, AttendanceEntity.class)).toList();
-        List<GradeEntity> gradeEntitiesList = gradeDto.getStudent().getGrades().stream()
-                .map(data -> modelMapper.map(data, GradeEntity.class)).toList();
+
         StudentEntity studentEntity = modelMapper.map(gradeDto.getStudent(), StudentEntity.class);
-        studentEntity.setAttendanceRecords(attendanceEntitiesList);
-        studentEntity.setGrades(gradeEntitiesList);
+
         GradeEntity gradeEntity = modelMapper.map(gradeDto, GradeEntity.class);
         gradeEntity.setStudent(studentEntity);
         return gradeEntity;

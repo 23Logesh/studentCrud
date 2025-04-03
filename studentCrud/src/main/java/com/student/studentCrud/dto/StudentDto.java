@@ -16,7 +16,5 @@ public class StudentDto {
     private String email;
     private String className;
 
-    private List<AttendanceDto> attendanceRecords;
 
-    private List<GradeDto> grades;
 }
