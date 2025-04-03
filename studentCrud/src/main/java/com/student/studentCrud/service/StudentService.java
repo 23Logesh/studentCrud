@@ -9,13 +9,13 @@ public interface StudentService {
 
     StudentDto saveStudent(StudentDto studentDto);
 
-    StudentDto findStudent(int studentId);
+    StudentDto findStudent(long rollNumber);
 
     StudentDto updateStudent(StudentDto studentDto);
 
-    StudentDto deleteStudent(int studentId);
+    StudentDto deleteStudent(long rollNumber);
 
     List<StudentDto> findAll();
 
-    StudentDto updateStudentName(int studentId, String studentName);
+    StudentDto updateStudentName(long rollNumber, String studentName);
 }

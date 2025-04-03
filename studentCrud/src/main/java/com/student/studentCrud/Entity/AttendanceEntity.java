@@ -12,7 +12,7 @@ public class AttendanceEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "sstudent_rollNumber")
     private StudentEntity student;
 
     private LocalDate date;

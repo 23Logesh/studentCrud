@@ -9,7 +9,7 @@ public class GradeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_rollNumber")
     private StudentEntity student;
 
     private String subject;

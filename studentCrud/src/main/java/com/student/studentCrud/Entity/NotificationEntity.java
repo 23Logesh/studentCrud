@@ -11,7 +11,7 @@ public class NotificationEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_rollNumber")
     private StudentEntity student;
 
     private String message;

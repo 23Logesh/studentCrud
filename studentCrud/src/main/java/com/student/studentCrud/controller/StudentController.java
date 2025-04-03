@@ -27,9 +27,9 @@ public class StudentController {
     }
 
     @GetMapping("/findById")
-    public ResponseEntity<StudentDto> getStudent(@RequestParam int studentId) {
-        log.info("[getStudent] Received API request to find student with ID: {}", studentId);
-        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.findStudent(studentId));
+    public ResponseEntity<StudentDto> getStudent(@RequestParam long rollNumber) {
+        log.info("[getStudent] Received API request to find student with ID: {}", rollNumber);
+        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.findStudent(rollNumber));
         log.info("[getStudent] Response: {}", response.getStatusCode());
         return response;
     }
@@ -54,17 +54,17 @@ public class StudentController {
     }
 
     @PatchMapping("/updateName")
-    public ResponseEntity<StudentDto> updateStudentName(@RequestParam int studentId, @RequestParam String studentName) {
-        log.info("[updateStudentName] Received API request to update name for student ID: {} to '{}'", studentId, studentName);
-        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.updateStudentName(studentId, studentName));
+    public ResponseEntity<StudentDto> updateStudentName(@RequestParam long rollNumber, @RequestParam String studentName) {
+        log.info("[updateStudentName] Received API request to update name for student ID: {} to '{}'", rollNumber, studentName);
+        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.updateStudentName(rollNumber, studentName));
         log.info("[updateStudentName] Response: {}", response.getStatusCode());
         return response;
     }
 
-    @DeleteMapping("/delete/{studentId}")
-    public ResponseEntity<StudentDto> deleteStudent(@PathVariable int studentId) {
-        log.info("[deleteStudent] Received API request to delete student with ID: {}", studentId);
-        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.deleteStudent(studentId));
+    @DeleteMapping("/delete/{rollNumber}")
+    public ResponseEntity<StudentDto> deleteStudent(@PathVariable long rollNumber) {
+        log.info("[deleteStudent] Received API request to delete student with ID: {}", rollNumber);
+        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.deleteStudent(rollNumber));
         log.info("[deleteStudent] Response: {}", response.getStatusCode());
         return response;
     }

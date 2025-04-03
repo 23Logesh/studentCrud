@@ -27,17 +27,17 @@ public class StudentServiceImp implements StudentService {
     public StudentDto saveStudent(StudentDto studentDto) {
 
         StudentDto savedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
-        log.info("[saveStudent] SUCCESS - Student saved with ID: {}, Name: {}", savedStudent.getStudentId(), savedStudent.getStudentName());
+        log.info("[saveStudent] SUCCESS - Student saved with ID: {}, Name: {}", savedStudent.getRollNumber(), savedStudent.getName());
         return savedStudent;
     }
 
     @Override
-    public StudentDto findStudent(int studentId) {
-        Optional<StudentEntity> studentOpt = studentRepo.findById(studentId);
-        log.info("[findStudent] SUCCESS - Found Student with ID: {}", studentId);
+    public StudentDto findStudent(long rollNumber) {
+        Optional<StudentEntity> studentOpt = studentRepo.findById(rollNumber);
+        log.info("[findStudent] SUCCESS - Found Student with ID: {}", rollNumber);
         return studentOpt.map(StudentEntity -> modelMapper.map(StudentEntity, StudentDto.class))
                 .orElseGet(() -> {
-                    log.warn("[findStudent] FAILED - No Student found with ID: {}", studentId);
+                    log.warn("[findStudent] FAILED - No Student found with ID: {}", rollNumber);
                     return null;
                 });
     }
@@ -51,46 +51,46 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public StudentDto updateStudent(StudentDto studentDto) {
-        if (studentDto == null || studentDto.getStudentId() == 0) {
+        if (studentDto == null || studentDto.getRollNumber() == 0) {
             log.warn("[updateStudent] FAILED - Invalid student data provided");
             return null;
         }
 
-        if (studentRepo.existsById(studentDto.getStudentId())) {
+        if (studentRepo.existsById(studentDto.getRollNumber())) {
             StudentDto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
-            log.info("[updateStudent] SUCCESS - Updated Student ID: {}, Name: {}", updatedStudent.getStudentId(), updatedStudent.getStudentName());
+            log.info("[updateStudent] SUCCESS - Updated Student ID: {}, Name: {}", updatedStudent.getRollNumber(), updatedStudent.getName());
             return updatedStudent;
         } else {
-            log.warn("[updateStudent] FAILED - No Student found with ID: {} for update", studentDto.getStudentId());
+            log.warn("[updateStudent] FAILED - No Student found with ID: {} for update", studentDto.getRollNumber());
             return null;
         }
     }
 
     @Override
-    public StudentDto updateStudentName(int studentId, String studentName) {
-        return Optional.ofNullable(findStudent(studentId))
+    public StudentDto updateStudentName(long rollNumber, String studentName) {
+        return Optional.ofNullable(findStudent(rollNumber))
                 .map(student -> {
-                    student.setStudentName(studentName);
+                    student.setName(studentName);
                     StudentDto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(student)));
-                    log.info("[updateStudentName] SUCCESS - Student ID: {} Name changed to: {}", studentId, studentName);
+                    log.info("[updateStudentName] SUCCESS - Student ID: {} Name changed to: {}", rollNumber, studentName);
                     return updatedStudent;
                 })
                 .orElseGet(() -> {
-                    log.warn("[updateStudentName] FAILED - No Student found with ID: {} for name update", studentId);
+                    log.warn("[updateStudentName] FAILED - No Student found with ID: {} for name update", rollNumber);
                     return null;
                 });
     }
 
     @Override
-    public StudentDto deleteStudent(int studentId) {
-        return studentRepo.findById(studentId)
+    public StudentDto deleteStudent(long rollNumber) {
+        return studentRepo.findById(rollNumber)
                 .map(student -> {
-                    studentRepo.deleteById(studentId);
-                    log.info("[deleteStudent] SUCCESS - Deleted Student with ID: {}", studentId);
+                    studentRepo.deleteById(rollNumber);
+                    log.info("[deleteStudent] SUCCESS - Deleted Student with ID: {}", rollNumber);
                     return convertEntityToDto(student);
                 })
                 .orElseGet(() -> {
-                    log.warn("[deleteStudent] FAILED - No Student found with ID: {} for deletion", studentId);
+                    log.warn("[deleteStudent] FAILED - No Student found with ID: {} for deletion", rollNumber);
                     return null;
                 });
     }
