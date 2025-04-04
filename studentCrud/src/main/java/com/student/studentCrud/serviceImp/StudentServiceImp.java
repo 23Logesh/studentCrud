@@ -95,6 +95,7 @@ public class StudentServiceImp implements StudentService {
                 });
     }
 
+
     public StudentDto convertEntityToDto(StudentEntity studentEntity) {
         return modelMapper.map(studentEntity, StudentDto.class);
     }

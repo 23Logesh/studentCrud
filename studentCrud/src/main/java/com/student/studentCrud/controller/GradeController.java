@@ -1,6 +1,5 @@
 package com.student.studentCrud.controller;
 
-import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.service.GradeService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +32,7 @@ public class GradeController {
         log.info("[getGrade] Response: {}", response.getStatusCode());
         return response;
     }
+
     @GetMapping("/student/{rollNumber}")
     public ResponseEntity<List<GradeDto>> getAttendanceByStudent(@PathVariable long rollNumber) {
         log.info("Fetching Grade records for student ID: {}", rollNumber);
@@ -71,6 +71,14 @@ public class GradeController {
         log.info("[deleteGrade] Received API request to delete grade with ID: {}", gradeId);
         ResponseEntity<GradeDto> response = ResponseEntity.ok(gradeService.deleteGrade(gradeId));
         log.info("[deleteGrade] Response: {}", response.getStatusCode());
+        return response;
+    }
+
+    @GetMapping("/calculateGPAAndPerformance")
+    public ResponseEntity<String> calculateGPAAndPerformanceForStudents() {
+        log.info("[calculateGPAAndPerformanceForStudents] Received API request");
+        ResponseEntity<String> response = ResponseEntity.ok(gradeService.calculateGPAAndPerformanceForStudents());
+        log.info("[calculateGPAAndPerformanceForStudents] Response: {}", response.getStatusCode());
         return response;
     }
 }

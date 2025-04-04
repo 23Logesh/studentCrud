@@ -6,6 +6,7 @@ import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.GradeRepo;
 import com.student.studentCrud.service.GradeService;
+import com.student.studentCrud.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,16 @@ public class GradeServiceImp implements GradeService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private StudentService studentService;
+
     @Override
     public GradeDto saveGrade(GradeDto gradeDto) {
         GradeDto savedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
         log.info("[saveGrade] SUCCESS - Grade saved for Student ID: {}, Subject: {}, Score: {}",
                 savedGrade.getStudent().getRollNumber(), savedGrade.getSubject(), savedGrade.getScore());
+        calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
+        log.info("[saveGrade] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", gradeDto.getStudent().getName());
         return savedGrade;
     }
 
@@ -74,6 +80,7 @@ public class GradeServiceImp implements GradeService {
                 .toList();
     }
 
+
     @Override
     public GradeDto updateGrade(GradeDto gradeDto) {
         if (gradeDto == null || gradeDto.getId() == 0) {
@@ -105,6 +112,40 @@ public class GradeServiceImp implements GradeService {
                     return null;
                 });
     }
+
+
+    @Override
+    public String calculateGPAAndPerformanceForStudents() {
+        studentService.findAllStudent().stream().map(StudentDto::getRollNumber).forEach(this::calculateGPAAndPerformance);
+        return "Successfully calculated GPA And Performance For All the Students";
+    }
+
+    public void calculateGPAAndPerformance(Long studentId) {
+        List<GradeDto> grades = gradeRepo.findByStudentRollNumber(studentId).stream().map(this::convertEntityToDto).toList();
+        StudentDto student = studentService.findStudent(studentId);
+
+        if (grades.isEmpty()) {
+            student.setGpa(0.0);
+            student.setPerformanceLevel("Needs Improvement");
+        } else {
+            double total = grades.stream().mapToDouble(GradeDto::getScore).sum();
+            double gpa = total / grades.size();
+            student.setGpa(gpa);
+
+            if (gpa >= 9) {
+                student.setPerformanceLevel("Excellent");
+            } else if (gpa >= 7) {
+                student.setPerformanceLevel("Good");
+            } else if (gpa >= 5) {
+                student.setPerformanceLevel("Average");
+            } else {
+                student.setPerformanceLevel("Needs Improvement");
+            }
+        }
+
+        studentService.updateStudent(student);
+    }
+
 
     private GradeDto convertEntityToDto(GradeEntity gradeEntity) {
 

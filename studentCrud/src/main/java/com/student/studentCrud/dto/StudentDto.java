@@ -11,5 +11,6 @@ public class StudentDto {
     private String email;
     private String className;
 
-
+    private Double gpa;
+    private String performanceLevel;
 }

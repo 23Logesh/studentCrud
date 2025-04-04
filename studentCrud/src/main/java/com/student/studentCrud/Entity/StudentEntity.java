@@ -17,4 +17,7 @@ public class StudentEntity {
     private String email;
     private String className;
 
+    private Double gpa;
+    private String performanceLevel;
+
 }

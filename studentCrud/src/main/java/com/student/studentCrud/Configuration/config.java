@@ -1,4 +1,4 @@
-package com.student.studentCrud.util;
+package com.student.studentCrud.Configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

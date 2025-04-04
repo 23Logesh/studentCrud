@@ -18,4 +18,6 @@ public interface GradeService {
     GradeDto updateScore(long gradeId, double score);
 
     List<GradeDto> findGradeByStudent(long rollNumber);
+
+    String calculateGPAAndPerformanceForStudents();
 }
