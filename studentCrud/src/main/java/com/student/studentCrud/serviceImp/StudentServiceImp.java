@@ -82,6 +82,16 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
+    public List<StudentDto> getRankedStudents(String className) {
+        return studentRepo.findByClassNameOrderByGpaDesc(className).stream().map(this::convertEntityToDto).toList();
+    }
+
+    @Override
+    public List<StudentDto> getTop3Students(String className) {
+        return studentRepo.findTop3ByClassNameOrderByGpaDesc(className).stream().map(this::convertEntityToDto).toList();
+    }
+
+    @Override
     public StudentDto deleteStudent(long rollNumber) {
         return studentRepo.findById(rollNumber)
                 .map(student -> {
