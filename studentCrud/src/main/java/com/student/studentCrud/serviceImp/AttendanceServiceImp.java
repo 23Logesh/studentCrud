@@ -14,7 +14,6 @@ import com.student.studentCrud.util.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,6 +38,8 @@ public class AttendanceServiceImp implements AttendanceService {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private ResponseStructure<Map<LocalDate, AttendanceStatus>> responseStructure;
 
     @Override
     public AttendanceDto markAttendance(long rollNumber, LocalDate date, AttendanceStatus status) {
@@ -64,7 +65,7 @@ public class AttendanceServiceImp implements AttendanceService {
                         AttendanceDto::getStatus
                 ));
 
-        return getMapResponseStructure(attendanceDtoList.getFirst().getStudent(), reportMap);
+        return responseStructure.getMapResponseStructure(attendanceDtoList.getFirst().getStudent(), reportMap);
     }
 
     @Override
@@ -128,7 +129,7 @@ public class AttendanceServiceImp implements AttendanceService {
                         AttendanceDto::getStatus
                 ));
 
-        return getMapResponseStructure(studentDto, reportMap);
+        return responseStructure.getMapResponseStructure(studentDto, reportMap);
 
     }
 
@@ -170,26 +171,6 @@ public class AttendanceServiceImp implements AttendanceService {
                 notificationService.saveNotification(notification);
             }
         }
-    }
-
-
-    private ResponseStructure<Map<LocalDate, AttendanceStatus>> getMapResponseStructure(StudentDto studentDto, Map<LocalDate, AttendanceStatus> reportMap) {
-
-        String message = "Student Details: " +
-                "\nRoll No: " + studentDto.getRollNumber() +
-                ",\n Name: " + studentDto.getName() +
-                ",\n Email: " + studentDto.getEmail() +
-                ",\n Class: " + studentDto.getClassName() +
-                ",\n GPA: " + studentDto.getGpa() +
-                ",\n Performance: " + studentDto.getPerformanceLevel() +
-                ",\n Rank: " + studentDto.getRank();
-
-
-        ResponseStructure<Map<LocalDate, AttendanceStatus>> response = new ResponseStructure<>();
-        response.setData(reportMap);
-        response.setMessage(message);
-        response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     private AttendanceEntity convertDtoToEntity(AttendanceDto attendanceDto) {

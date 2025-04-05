@@ -32,6 +32,8 @@ public class NotificationServiceImp implements NotificationService {
     @Autowired
     private ModelMapper modelMapper;
 
+    private ResponseStructure<Map<LocalDateTime, String>> responseStructure;
+
     @Override
     public void saveNotification(NotificationDto notificationDto) {
         notificationRepo.save(convertDtoToEntity(notificationDto));
@@ -50,26 +52,7 @@ public class NotificationServiceImp implements NotificationService {
                         NotificationDto::getMessage
                 ));
 
-        return getMapResponseStructure(notificationDtoList.getFirst().getStudent(), reportMap);
-    }
-
-    private ResponseStructure<Map<LocalDateTime, String>> getMapResponseStructure(StudentDto studentDto, Map<LocalDateTime, String> reportMap) {
-
-        String message = "Student Details: " +
-                "\nRoll No: " + studentDto.getRollNumber() +
-                ",\n Name: " + studentDto.getName() +
-                ",\n Email: " + studentDto.getEmail() +
-                ",\n Class: " + studentDto.getClassName() +
-                ",\n GPA: " + studentDto.getGpa() +
-                ",\n Performance: " + studentDto.getPerformanceLevel() +
-                ",\n Rank: " + studentDto.getRank();
-
-
-        ResponseStructure<Map<LocalDateTime, String>> response = new ResponseStructure<>();
-        response.setData(reportMap);
-        response.setMessage(message);
-        response.setStatus(HttpStatus.OK.value());
-        return response;
+        return responseStructure.getMapResponseStructure(notificationDtoList.getFirst().getStudent(), reportMap);
     }
 
     @Override

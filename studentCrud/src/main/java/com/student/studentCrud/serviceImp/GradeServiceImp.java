@@ -32,6 +32,8 @@ public class GradeServiceImp implements GradeService {
     @Autowired
     private StudentService studentService;
 
+    private ResponseStructure<Map<String,Double>> responseStructure;
+
     @Override
     public GradeDto saveGrade(long rollNumber, String subject, double score) {
         GradeDto gradeDto = new GradeDto();
@@ -78,26 +80,10 @@ public class GradeServiceImp implements GradeService {
                         GradeDto::getScore
                 ));
 
-        return getMapResponseStructure(gradeDtoList.getFirst().getStudent(), reportMap);
+        return responseStructure.getMapResponseStructure(gradeDtoList.getFirst().getStudent(), reportMap);
 
     }
 
-    private ResponseStructure<Map<String, Double>> getMapResponseStructure(StudentDto studentDto, Map<String, Double> reportMap) {
-
-        String message = "Student Details: " +
-                "\nRoll No: " + studentDto.getRollNumber() +
-                ",\n Name: " + studentDto.getName() +
-                ",\n Email: " + studentDto.getEmail() +
-                ",\n Class: " + studentDto.getClassName() +
-                ",\n GPA: " + studentDto.getGpa() +
-                ",\n Performance: " + studentDto.getPerformanceLevel() +
-                ",\n Rank: " + studentDto.getRank();
-        ResponseStructure<Map<String, Double>> response = new ResponseStructure<>();
-        response.setData(reportMap);
-        response.setMessage(message);
-        response.setStatus(HttpStatus.OK.value());
-        return response;
-    }
 
     @Override
     public GradeDto updateGrade(GradeDto gradeDto) {
