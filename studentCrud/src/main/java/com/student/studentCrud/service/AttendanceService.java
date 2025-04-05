@@ -20,9 +20,7 @@ public interface AttendanceService {
 
     List<AttendanceDto> findAllAttendances();
 
-
     AttendanceDto updateAttendance(AttendanceDto attendanceDto);
-
 
     ResponseStructure<Map<LocalDate, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year);
 
