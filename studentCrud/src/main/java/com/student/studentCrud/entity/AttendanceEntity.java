@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(indexes = @Index(columnList = "student_roll_number"))
 public class AttendanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

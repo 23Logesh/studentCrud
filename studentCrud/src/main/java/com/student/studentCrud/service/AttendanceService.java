@@ -10,9 +10,9 @@ import java.util.Map;
 
 public interface AttendanceService {
 
-    AttendanceDto saveAttendance(AttendanceDto attendanceDto);
+    AttendanceDto markAttendance(long rollNumber, LocalDate date, AttendanceStatus status);
 
-    List<AttendanceDto> findAttendanceByStudent(long rollNumber);
+    ResponseStructure<Map<LocalDate, AttendanceStatus>> getAttendanceForStudent(long rollNumber);
 
     AttendanceDto updateAttendanceStatus(long id, String status);
 
@@ -20,11 +20,10 @@ public interface AttendanceService {
 
     List<AttendanceDto> findAllAttendances();
 
-    AttendanceDto findAttendance(long attendanceId);
 
     AttendanceDto updateAttendance(AttendanceDto attendanceDto);
 
 
-    ResponseStructure<?> getMonthlyAttendanceReport(long rollNumber, int month, int year);
+    ResponseStructure<Map<LocalDate, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year);
 
 }
