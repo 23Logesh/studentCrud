@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class GradeDto {
-    private Long id;
+    private long id;
 
     private StudentDto student;
 

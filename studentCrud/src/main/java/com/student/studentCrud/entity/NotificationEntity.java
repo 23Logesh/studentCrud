@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "student_rollNumber")

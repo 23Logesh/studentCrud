@@ -8,14 +8,14 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(indexes = @Index(columnList = "student_roll_number"))
+@Table(indexes = @Index(columnList = "student_rollNumber"))
 public class AttendanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_roll_number", referencedColumnName = "rollNumber")
+    @JoinColumn(name = "student_rollNumber", referencedColumnName = "rollNumber")
     private StudentEntity student;
 
     private LocalDate date;

@@ -5,13 +5,13 @@ import lombok.Data;
 @Data
 public class StudentDto {
 
-    private Long rollNumber;
+    private long rollNumber;
 
     private String name;
     private String email;
     private String className;
 
-    private Double gpa;
+    private double gpa;
     private String performanceLevel;
 
     private int rank;

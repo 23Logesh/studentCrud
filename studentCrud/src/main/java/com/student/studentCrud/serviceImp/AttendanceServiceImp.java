@@ -70,18 +70,26 @@ public class AttendanceServiceImp implements AttendanceService {
     @Override
     public AttendanceDto updateAttendanceStatus(long id, String status) {
         AttendanceEntity attendance = getAttendanceById(id);
-        attendance.setStatus(AttendanceStatus.valueOf(status));
-        calculateAttendancePercentageForStudent(attendance.getStudent().getRollNumber());
-        return convertEntityToDto(attendanceRepository.save(attendance));
+        if (attendance != null) {
+            AttendanceDto attendanceDto = convertEntityToDto(attendance);
+            attendanceDto.setStatus(AttendanceStatus.valueOf(status));
+            attendanceDto = convertEntityToDto(attendanceRepository.save(convertDtoToEntity(attendanceDto)));
+            calculateAttendancePercentageForStudent(attendanceDto.getStudent().getRollNumber());
+            return attendanceDto;
+        }
+        return null;
     }
 
     @Override
     public AttendanceDto deleteAttendance(long id) {
         AttendanceEntity attendance = getAttendanceById(id);
-        attendanceRepository.delete(attendance);
-        log.info("Deleted Attendance ID: {}", id);
-        calculateAttendancePercentageForStudent(attendance.getStudent().getRollNumber());
-        return convertEntityToDto(attendance);
+        if (attendance != null) {
+            attendanceRepository.delete(attendance);
+            log.info("Deleted Attendance ID: {}", id);
+            calculateAttendancePercentageForStudent(attendance.getStudent().getRollNumber());
+            return convertEntityToDto(attendance);
+        }
+        return null;
     }
 
     @Override
@@ -126,26 +134,7 @@ public class AttendanceServiceImp implements AttendanceService {
 
     private AttendanceEntity getAttendanceById(long id) {
         return attendanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Attendance not found with ID: " + id));
-    }
-
-    private static ResponseStructure<Map<LocalDate, AttendanceStatus>> getMapResponseStructure(StudentDto studentDto, Map<LocalDate, AttendanceStatus> reportMap) {
-
-        String message = "Student Details: " +
-                "Roll No: " + studentDto.getRollNumber() +
-                ", Name: " + studentDto.getName() +
-                ", Email: " + studentDto.getEmail() +
-                ", Class: " + studentDto.getClassName() +
-                ", GPA: " + studentDto.getGpa() +
-                ", Performance: " + studentDto.getPerformanceLevel() +
-                ", Rank: " + studentDto.getRank();
-
-
-        ResponseStructure<Map<LocalDate, AttendanceStatus>> response = new ResponseStructure<>();
-        response.setData(reportMap);
-        response.setMessage(message);
-        response.setStatus(HttpStatus.OK.value());
-        return response;
+                .orElse(null);
     }
 
     public void calculateAttendancePercentageForStudent(Long studentId) {
@@ -175,12 +164,32 @@ public class AttendanceServiceImp implements AttendanceService {
 
             if (percentage < 75.0) {
                 NotificationDto notification = new NotificationDto();
-                notification.setStudent(studentDto); // Already in DTO format
+                notification.setStudent(studentDto);
                 notification.setMessage("⚠️ Attendance below 75%. Please take necessary action.");
                 notification.setTimestamp(LocalDateTime.now());
                 notificationService.saveNotification(notification);
             }
         }
+    }
+
+
+    private ResponseStructure<Map<LocalDate, AttendanceStatus>> getMapResponseStructure(StudentDto studentDto, Map<LocalDate, AttendanceStatus> reportMap) {
+
+        String message = "Student Details: " +
+                "\nRoll No: " + studentDto.getRollNumber() +
+                ",\n Name: " + studentDto.getName() +
+                ",\n Email: " + studentDto.getEmail() +
+                ",\n Class: " + studentDto.getClassName() +
+                ",\n GPA: " + studentDto.getGpa() +
+                ",\n Performance: " + studentDto.getPerformanceLevel() +
+                ",\n Rank: " + studentDto.getRank();
+
+
+        ResponseStructure<Map<LocalDate, AttendanceStatus>> response = new ResponseStructure<>();
+        response.setData(reportMap);
+        response.setMessage(message);
+        response.setStatus(HttpStatus.OK.value());
+        return response;
     }
 
     private AttendanceEntity convertDtoToEntity(AttendanceDto attendanceDto) {

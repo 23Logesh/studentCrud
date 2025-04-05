@@ -1,13 +1,14 @@
 package com.student.studentCrud.service;
 
 import com.student.studentCrud.dto.GradeDto;
+import com.student.studentCrud.util.ResponseStructure;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GradeService {
-    GradeDto saveGrade(GradeDto gradeDto);
 
-    GradeDto findGrade(long gradeId);
+    GradeDto saveGrade(long rollNumber, String subject, double score);
 
     GradeDto updateGrade(GradeDto gradeDto);
 
@@ -17,6 +18,6 @@ public interface GradeService {
 
     GradeDto updateScore(long gradeId, double score);
 
-    List<GradeDto> findGradeByStudent(long rollNumber);
+    ResponseStructure<Map<String, Double>> findGradeByStudent(long rollNumber);
 
 }

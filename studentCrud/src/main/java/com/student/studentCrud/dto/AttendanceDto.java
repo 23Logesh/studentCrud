@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 public class AttendanceDto {
-    private Long id;
+    private long id;
     private StudentDto student;
     private LocalDate date;
     private AttendanceStatus status;

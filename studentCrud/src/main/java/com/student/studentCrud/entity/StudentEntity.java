@@ -8,13 +8,13 @@ import lombok.Data;
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rollNumber;
+    private long rollNumber;
 
     private String name;
     private String email;
     private String className;
 
-    private Double gpa;
+    private double gpa;
     private String performanceLevel;
 
     @Column(name = "`rank`")
