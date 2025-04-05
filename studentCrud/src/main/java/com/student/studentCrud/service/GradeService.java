@@ -19,5 +19,4 @@ public interface GradeService {
 
     List<GradeDto> findGradeByStudent(long rollNumber);
 
-    String calculateGPAAndPerformanceForStudents();
 }

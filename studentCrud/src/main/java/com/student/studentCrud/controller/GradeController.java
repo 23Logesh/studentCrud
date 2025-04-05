@@ -73,12 +73,4 @@ public class GradeController {
         log.info("[deleteGrade] Response: {}", response.getStatusCode());
         return response;
     }
-
-    @GetMapping("/calculateGPAAndPerformance")
-    public ResponseEntity<String> calculateGPAAndPerformanceForStudents() {
-        log.info("[calculateGPAAndPerformanceForStudents] Received API request");
-        ResponseEntity<String> response = ResponseEntity.ok(gradeService.calculateGPAAndPerformanceForStudents());
-        log.info("[calculateGPAAndPerformanceForStudents] Response: {}", response.getStatusCode());
-        return response;
-    }
 }

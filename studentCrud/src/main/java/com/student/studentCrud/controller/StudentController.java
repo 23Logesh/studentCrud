@@ -44,6 +44,17 @@ public class StudentController {
         return response;
     }
 
+    @GetMapping("/findTop3Rank")
+    public ResponseEntity<List<StudentDto>> findTop3Rank(@RequestParam("class") String className)
+    {
+        log.info("[findTop3Student] Received API request to retrieve top 3 student for class: {}", className);
+        ResponseEntity<List<StudentDto>> response = ResponseEntity.ok(studentService.findTop3Rank(className));
+        List<StudentDto> students = response.getBody();
+        int studentCount = (students != null) ? students.size() : 0;
+        log.info("[findTop3Student] Found {} students. Response: {}", studentCount, response.getStatusCode());
+        return response;
+    }
+
 
     @PutMapping("/update")
     public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto student) {

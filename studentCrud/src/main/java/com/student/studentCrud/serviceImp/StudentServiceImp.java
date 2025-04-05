@@ -95,6 +95,18 @@ public class StudentServiceImp implements StudentService {
                 });
     }
 
+    public List<StudentDto> findStudentsByClassName(String className) {
+
+        List<StudentDto> studentsInClass = studentRepo.findByClassName(className).stream().map(this::convertEntityToDto).toList();
+        return studentsInClass.stream()
+                .map(student -> modelMapper.map(student, StudentDto.class))
+                .toList();
+    }
+
+    @Override
+    public List<StudentDto> findTop3Rank(String className) {
+        return studentRepo.findByTop3Rank(className).stream().map(this::convertEntityToDto).toList();
+    }
 
     public StudentDto convertEntityToDto(StudentEntity studentEntity) {
         return modelMapper.map(studentEntity, StudentDto.class);

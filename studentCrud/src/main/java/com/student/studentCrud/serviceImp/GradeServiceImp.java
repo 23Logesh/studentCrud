@@ -35,6 +35,7 @@ public class GradeServiceImp implements GradeService {
                 savedGrade.getStudent().getRollNumber(), savedGrade.getSubject(), savedGrade.getScore());
         calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
         log.info("[saveGrade] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", gradeDto.getStudent().getName());
+        updateRankForClass(gradeDto.getStudent().getClassName());
         return savedGrade;
     }
 
@@ -66,6 +67,7 @@ public class GradeServiceImp implements GradeService {
                     updatedGrade.getId(), updatedGrade.getScore());
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
             log.info("[updateScore] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", gradeDto.getStudent().getName());
+            updateRankForClass(gradeDto.getStudent().getClassName());
             return updatedGrade;
         } else {
             log.warn("[updateScore] FAILED - No Grade found with ID: {} for updateScore", gradeId);
@@ -81,7 +83,6 @@ public class GradeServiceImp implements GradeService {
                 .toList();
     }
 
-
     @Override
     public GradeDto updateGrade(GradeDto gradeDto) {
         if (gradeDto == null || gradeDto.getId() == 0) {
@@ -95,6 +96,7 @@ public class GradeServiceImp implements GradeService {
                     updatedGrade.getId(), updatedGrade.getSubject(), updatedGrade.getScore());
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
             log.info("[UpdateGrade] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", gradeDto.getStudent().getName());
+            updateRankForClass(gradeDto.getStudent().getClassName());
             return updatedGrade;
         } else {
             log.warn("[updateGrade] FAILED - No Grade found with ID: {} for update", gradeDto.getId());
@@ -110,6 +112,7 @@ public class GradeServiceImp implements GradeService {
                     log.info("[deleteGrade] SUCCESS - Deleted Grade with ID: {}", gradeId);
                     calculateGPAAndPerformance(grade.getStudent().getRollNumber());
                     log.info("[deleteGrade] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", grade.getStudent().getName());
+                    updateRankForClass(grade.getStudent().getClassName());
                     return convertEntityToDto(grade);
                 })
                 .orElseGet(() -> {
@@ -118,12 +121,6 @@ public class GradeServiceImp implements GradeService {
                 });
     }
 
-
-    @Override
-    public String calculateGPAAndPerformanceForStudents() {
-        studentService.findAllStudent().stream().map(StudentDto::getRollNumber).forEach(this::calculateGPAAndPerformance);
-        return "Successfully calculated GPA And Performance For All the Students";
-    }
 
     public void calculateGPAAndPerformance(Long studentId) {
         List<GradeDto> grades = gradeRepo.findByStudentRollNumber(studentId).stream().map(this::convertEntityToDto).toList();
@@ -152,20 +149,44 @@ public class GradeServiceImp implements GradeService {
     }
 
 
+    public void updateRankForClass(String className) {
+        List<StudentDto> studentsInClass = studentService.findStudentsByClassName(className);
+
+        if (studentsInClass == null || studentsInClass.isEmpty()) {
+            log.warn("[updateRankForClass] No students found for class: {}", className);
+            return;
+        }
+
+        studentsInClass.sort((s1, s2) -> s2.getGpa().compareTo(s1.getGpa()));
+
+        int rank = 1;
+
+        for (int i = 0; i < studentsInClass.size(); i++) {
+            StudentDto currentStudent = studentsInClass.get(i);
+
+            if (i > 0 && currentStudent.getGpa().equals(studentsInClass.get(i - 1).getGpa())) {
+                currentStudent.setRank(studentsInClass.get(i - 1).getRank());
+            } else {
+                currentStudent.setRank(rank);
+                rank++;
+            }
+        }
+
+        studentsInClass.forEach(studentService::updateStudent);
+
+        log.info("[updateRankForClass] Successfully updated ranks for class: {}", className);
+    }
+
+
     private GradeDto convertEntityToDto(GradeEntity gradeEntity) {
-
         StudentDto studentDto = modelMapper.map(gradeEntity.getStudent(), StudentDto.class);
-
         GradeDto gradeDto = modelMapper.map(gradeEntity, GradeDto.class);
         gradeDto.setStudent(studentDto);
         return gradeDto;
-
     }
 
     private GradeEntity convertDtoToEntity(GradeDto gradeDto) {
-
         StudentEntity studentEntity = modelMapper.map(gradeDto.getStudent(), StudentEntity.class);
-
         GradeEntity gradeEntity = modelMapper.map(gradeDto, GradeEntity.class);
         gradeEntity.setStudent(studentEntity);
         return gradeEntity;

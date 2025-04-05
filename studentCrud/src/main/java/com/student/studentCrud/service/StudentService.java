@@ -19,4 +19,8 @@ public interface StudentService {
 
     StudentDto updateStudentName(long rollNumber, String studentName);
 
+    List<StudentDto> findStudentsByClassName(String className);
+
+    List<StudentDto> findTop3Rank(String className);
+
 }

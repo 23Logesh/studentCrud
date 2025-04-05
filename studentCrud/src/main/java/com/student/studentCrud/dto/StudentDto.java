@@ -14,5 +14,6 @@ public class StudentDto {
     private Double gpa;
     private String performanceLevel;
 
+    private int rank;
 
 }
