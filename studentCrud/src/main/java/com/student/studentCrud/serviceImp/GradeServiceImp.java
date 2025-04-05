@@ -11,7 +11,6 @@ import com.student.studentCrud.util.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class GradeServiceImp implements GradeService {
     @Autowired
     private StudentService studentService;
 
-    private ResponseStructure<Map<String,Double>> responseStructure;
+    private ResponseStructure<Map<String, Double>> responseStructure;
 
     @Override
     public GradeDto saveGrade(long rollNumber, String subject, double score) {

@@ -14,7 +14,7 @@ public class ResponseStructure<T> {
     int status;
     String message;
 
-    public <K,V>ResponseStructure<Map<K,V>> getMapResponseStructure(StudentDto studentDto, Map<K, V> reportMap) {
+    public <K, V> ResponseStructure<Map<K, V>> getMapResponseStructure(StudentDto studentDto, Map<K, V> reportMap) {
 
         String message = "Student Details: " +
                 "\nRoll No: " + studentDto.getRollNumber() +
@@ -24,7 +24,7 @@ public class ResponseStructure<T> {
                 ",\n GPA: " + studentDto.getGpa() +
                 ",\n Performance: " + studentDto.getPerformanceLevel() +
                 ",\n Rank: " + studentDto.getRank();
-        ResponseStructure<Map<K,V>> response = new ResponseStructure<>();
+        ResponseStructure<Map<K, V>> response = new ResponseStructure<>();
         response.setData(reportMap);
         response.setMessage(message);
         response.setStatus(HttpStatus.OK.value());
