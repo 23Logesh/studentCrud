@@ -64,12 +64,13 @@ public class GradeServiceImp implements GradeService {
             GradeDto updatedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             log.info("[updateGrade] SUCCESS - Updated Grade ID: {}, Score: {}",
                     updatedGrade.getId(), updatedGrade.getScore());
+            calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
+            log.info("[updateScore] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", gradeDto.getStudent().getName());
             return updatedGrade;
         } else {
-            log.warn("[updateGrade] FAILED - No Grade found with ID: {} for updateScore", gradeId);
+            log.warn("[updateScore] FAILED - No Grade found with ID: {} for updateScore", gradeId);
             return null;
         }
-
     }
 
     @Override
@@ -92,6 +93,8 @@ public class GradeServiceImp implements GradeService {
             GradeDto updatedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             log.info("[updateGrade] SUCCESS - Updated Grade ID: {}, Subject: {}, Score: {}",
                     updatedGrade.getId(), updatedGrade.getSubject(), updatedGrade.getScore());
+            calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
+            log.info("[UpdateGrade] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", gradeDto.getStudent().getName());
             return updatedGrade;
         } else {
             log.warn("[updateGrade] FAILED - No Grade found with ID: {} for update", gradeDto.getId());
@@ -105,6 +108,8 @@ public class GradeServiceImp implements GradeService {
                 .map(grade -> {
                     gradeRepo.deleteById(gradeId);
                     log.info("[deleteGrade] SUCCESS - Deleted Grade with ID: {}", gradeId);
+                    calculateGPAAndPerformance(grade.getStudent().getRollNumber());
+                    log.info("[deleteGrade] SUCCESS - CGP and Performance Updated for Student RollNumber:{}", grade.getStudent().getName());
                     return convertEntityToDto(grade);
                 })
                 .orElseGet(() -> {

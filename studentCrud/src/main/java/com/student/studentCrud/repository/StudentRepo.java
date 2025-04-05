@@ -9,12 +9,4 @@ import java.util.List;
 
 @Repository
 public interface StudentRepo extends JpaRepository<StudentEntity, Long> {
-
-
-    List<StudentEntity> findByClassNameOrderByGpaDesc(String className);
-
-
-    @Query("SELECT s FROM StudentEntity s WHERE s.className = ?1 ORDER BY s.gpa DESC")
-    List<StudentEntity> findTop3ByClassNameOrderByGpaDesc(String className);
-
 }

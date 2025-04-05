@@ -44,15 +44,6 @@ public class StudentController {
         return response;
     }
 
-    @GetMapping("/rankList/{className}")
-    public List<StudentDto> getRankedStudents(@PathVariable String className) {
-        return studentService.getRankedStudents(className);
-    }
-
-    @GetMapping("/top3/{className}")
-    public List<StudentDto> getTop3Students(@PathVariable String className) {
-        return studentService.getTop3Students(className);
-    }
 
     @PutMapping("/update")
     public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto student) {
