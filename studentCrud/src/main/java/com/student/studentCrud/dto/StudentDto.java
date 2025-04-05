@@ -16,4 +16,6 @@ public class StudentDto {
 
     private int rank;
 
+    private double attendancePercentage;
+
 }

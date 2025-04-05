@@ -20,5 +20,7 @@ public class StudentEntity {
     @Column(name = "`rank`")
     private int rank;
 
+    private double attendancePercentage;
+
 
 }

@@ -29,5 +29,4 @@ public interface StudentRepo extends JpaRepository<StudentEntity, Long> {
             ORDER BY `rank` ASC
             """, nativeQuery = true)
     List<StudentEntity> findByTop3Rank(@Param("className") String className);
-
 }
