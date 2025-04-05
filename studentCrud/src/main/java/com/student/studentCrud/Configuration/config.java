@@ -12,7 +12,7 @@ public class config {
     ModelMapper mapper = null;
 
     @Bean
-    public ModelMapper getModelMapper() {
-        return Objects.requireNonNullElseGet(mapper, ModelMapper::new);
+    public ModelMapper modelMapper() {
+        return new ModelMapper(); 
     }
 }
