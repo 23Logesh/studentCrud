@@ -23,8 +23,8 @@ public class AttendanceController {
 
 
     @PostMapping("/markAttendance")
-    public ResponseEntity<AttendanceDto> markAttendance(@RequestParam long rollNumber,@RequestParam LocalDate date,@RequestParam AttendanceStatus status) {
-        return ResponseEntity.ok(attendanceService.markAttendance( rollNumber, date, status));
+    public ResponseEntity<AttendanceDto> markAttendance(@RequestParam long rollNumber, @RequestParam LocalDate date, @RequestParam AttendanceStatus status) {
+        return ResponseEntity.ok(attendanceService.markAttendance(rollNumber, date, status));
     }
 
     @GetMapping("/student/{rollNumber}")

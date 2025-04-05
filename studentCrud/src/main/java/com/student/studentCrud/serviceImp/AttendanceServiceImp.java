@@ -53,18 +53,18 @@ public class AttendanceServiceImp implements AttendanceService {
 
     @Override
     public ResponseStructure<Map<LocalDate, AttendanceStatus>> getAttendanceForStudent(long rollNumber) {
-        List<AttendanceDto> attendanceDtos = attendanceRepository.findByStudentRollNumber(rollNumber)
+        List<AttendanceDto> attendanceDtoList = attendanceRepository.findByStudentRollNumber(rollNumber)
                 .stream()
                 .map(this::convertEntityToDto)
                 .toList();
 
-        Map<LocalDate, AttendanceStatus> reportMap = attendanceDtos.stream()
+        Map<LocalDate, AttendanceStatus> reportMap = attendanceDtoList.stream()
                 .collect(Collectors.toMap(
                         AttendanceDto::getDate,
                         AttendanceDto::getStatus
                 ));
 
-        return getMapResponseStructure(attendanceDtos.getFirst().getStudent(), reportMap);
+        return getMapResponseStructure(attendanceDtoList.getFirst().getStudent(), reportMap);
     }
 
     @Override

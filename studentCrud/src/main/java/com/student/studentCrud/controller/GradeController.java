@@ -37,7 +37,7 @@ public class GradeController {
 
     @PutMapping("/update")
     public ResponseEntity<GradeDto> updateGrade(@RequestBody GradeDto gradeDto) {
-        return  ResponseEntity.ok(gradeService.updateGrade(gradeDto));
+        return ResponseEntity.ok(gradeService.updateGrade(gradeDto));
     }
 
     @PutMapping("/update/score")

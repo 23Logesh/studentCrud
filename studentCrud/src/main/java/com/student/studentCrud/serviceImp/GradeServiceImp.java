@@ -1,14 +1,12 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.dto.AttendanceDto;
-import com.student.studentCrud.entity.GradeEntity;
-import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.dto.StudentDto;
+import com.student.studentCrud.entity.GradeEntity;
+import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.repository.GradeRepo;
 import com.student.studentCrud.service.GradeService;
 import com.student.studentCrud.service.StudentService;
-import com.student.studentCrud.util.AttendanceStatus;
 import com.student.studentCrud.util.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,10 +33,10 @@ public class GradeServiceImp implements GradeService {
     private StudentService studentService;
 
     @Override
-    public GradeDto saveGrade(long rollNumber, String subject, double score){
+    public GradeDto saveGrade(long rollNumber, String subject, double score) {
         GradeDto gradeDto = new GradeDto();
         gradeDto.setStudent(studentService.findStudent(rollNumber));
-        if(gradeDto.getStudent()!=null) {
+        if (gradeDto.getStudent() != null) {
             gradeDto.setSubject(subject);
             gradeDto.setScore(score);
             gradeDto = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
@@ -105,7 +102,7 @@ public class GradeServiceImp implements GradeService {
     @Override
     public GradeDto updateGrade(GradeDto gradeDto) {
         if (gradeDto == null || gradeDto.getId() == 0) {
-           return null;
+            return null;
         }
         if (gradeRepo.existsById(gradeDto.getId())) {
             GradeDto updatedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
@@ -171,7 +168,7 @@ public class GradeServiceImp implements GradeService {
         for (int i = 0; i < studentsInClass.size(); i++) {
             StudentDto currentStudent = studentsInClass.get(i);
 
-            if (i > 0 && currentStudent.getGpa()==(studentsInClass.get(i - 1).getGpa())) {
+            if (i > 0 && currentStudent.getGpa() == (studentsInClass.get(i - 1).getGpa())) {
                 currentStudent.setRank(studentsInClass.get(i - 1).getRank());
             } else {
                 currentStudent.setRank(rank);

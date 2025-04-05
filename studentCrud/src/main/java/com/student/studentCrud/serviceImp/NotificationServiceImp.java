@@ -1,18 +1,23 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.entity.NotificationEntity;
-import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.dto.NotificationDto;
 import com.student.studentCrud.dto.StudentDto;
+import com.student.studentCrud.entity.NotificationEntity;
+import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.repository.NotificationRepo;
 import com.student.studentCrud.repository.StudentRepo;
 import com.student.studentCrud.service.NotificationService;
+import com.student.studentCrud.util.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,37 +33,60 @@ public class NotificationServiceImp implements NotificationService {
     private ModelMapper modelMapper;
 
     @Override
-    public NotificationDto saveNotification(NotificationDto notificationDto) {
-        NotificationEntity savedNotification = notificationRepo.save(convertDtoToEntity(notificationDto));
-        log.info("[saveNotification] SUCCESS - Notification saved for Student ID: {}, Message: {}",
-                savedNotification.getStudent().getRollNumber(), savedNotification.getMessage());
-        return convertEntityToDto(savedNotification);
+    public void saveNotification(NotificationDto notificationDto) {
+        notificationRepo.save(convertDtoToEntity(notificationDto));
+
     }
 
     @Override
-    public List<NotificationDto> findNotificationsByStudent(long rollNumber) {
-        return notificationRepo.findByStudentRollNumber(rollNumber)
+    public ResponseStructure<Map<LocalDateTime, String>> findNotificationsByStudent(long rollNumber) {
+        List<NotificationDto> notificationDtoList = notificationRepo.findByStudentRollNumber(rollNumber)
                 .stream()
                 .map(this::convertEntityToDto)
                 .toList();
+        Map<LocalDateTime, String> reportMap = notificationDtoList.stream()
+                .collect(Collectors.toMap(
+                        NotificationDto::getTimestamp,
+                        NotificationDto::getMessage
+                ));
+
+        return getMapResponseStructure(notificationDtoList.getFirst().getStudent(), reportMap);
+    }
+
+    private ResponseStructure<Map<LocalDateTime, String>> getMapResponseStructure(StudentDto studentDto, Map<LocalDateTime, String> reportMap) {
+
+        String message = "Student Details: " +
+                "\nRoll No: " + studentDto.getRollNumber() +
+                ",\n Name: " + studentDto.getName() +
+                ",\n Email: " + studentDto.getEmail() +
+                ",\n Class: " + studentDto.getClassName() +
+                ",\n GPA: " + studentDto.getGpa() +
+                ",\n Performance: " + studentDto.getPerformanceLevel() +
+                ",\n Rank: " + studentDto.getRank();
+
+
+        ResponseStructure<Map<LocalDateTime, String>> response = new ResponseStructure<>();
+        response.setData(reportMap);
+        response.setMessage(message);
+        response.setStatus(HttpStatus.OK.value());
+        return response;
     }
 
     @Override
-    public NotificationDto updateNotification(Long id, String message) {
-        NotificationEntity notification = getNotificationById(id);
+    public NotificationDto updateNotification(long id, String message) {
+        NotificationDto notification = findNotification(id);
         notification.setMessage(message);
-        NotificationEntity updatedNotification = notificationRepo.save(notification);
-        log.info("[updateNotification] SUCCESS - Updated Notification ID: {}, Message: {}",
-                updatedNotification.getId(), updatedNotification.getMessage());
-        return convertEntityToDto(updatedNotification);
+        return convertEntityToDto(notificationRepo.save(convertDtoToEntity(notification)));
     }
 
     @Override
-    public NotificationDto deleteNotification(Long id) {
-        NotificationEntity notification = getNotificationById(id);
-        notificationRepo.delete(notification);
-        log.info("[deleteNotification] SUCCESS - Deleted Notification ID: {}", id);
-        return convertEntityToDto(notification);
+    public NotificationDto deleteNotification(long id) {
+        NotificationDto notification = findNotification(id);
+        if (notification != null) {
+            notificationRepo.delete(convertDtoToEntity(notification));
+            return notification;
+        }
+        return null;
     }
 
     @Override
@@ -70,27 +98,26 @@ public class NotificationServiceImp implements NotificationService {
     }
 
     @Override
-    public NotificationDto findNotification(Long notificationId) {
-        return convertEntityToDto(getNotificationById(notificationId));
-    }
-
-    private NotificationEntity getNotificationById(Long id) {
-        return notificationRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Notification not found with ID: " + id));
+    public NotificationDto findNotification(long notificationId) {
+        return convertEntityToDto(notificationRepo.findById(notificationId).orElse(null));
     }
 
     private NotificationEntity convertDtoToEntity(NotificationDto notificationDto) {
+        if (notificationDto == null) return null;
         StudentEntity student = studentRepo.findById(notificationDto.getStudent().getRollNumber())
-                .orElseThrow(() -> new RuntimeException("Student not found with Roll Number: " + notificationDto.getStudent().getRollNumber()));
-
+                .orElse(null);
         NotificationEntity notificationEntity = modelMapper.map(notificationDto, NotificationEntity.class);
-        notificationEntity.setStudent(student);
+        if (student != null)
+            notificationEntity.setStudent(student);
         return notificationEntity;
     }
 
     private NotificationDto convertEntityToDto(NotificationEntity notificationEntity) {
+        if (notificationEntity == null) return null;
+
         NotificationDto notificationDto = modelMapper.map(notificationEntity, NotificationDto.class);
-        notificationDto.setStudent(modelMapper.map(notificationEntity.getStudent(), StudentDto.class));
+        if (notificationEntity.getStudent() != null)
+            notificationDto.setStudent(modelMapper.map(notificationEntity.getStudent(), StudentDto.class));
         return notificationDto;
     }
 }
