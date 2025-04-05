@@ -1,7 +1,7 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.Entity.NotificationEntity;
-import com.student.studentCrud.Entity.StudentEntity;
+import com.student.studentCrud.entity.NotificationEntity;
+import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.dto.NotificationDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.NotificationRepo;

@@ -1,4 +1,4 @@
-package com.student.studentCrud.Entity;
+package com.student.studentCrud.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

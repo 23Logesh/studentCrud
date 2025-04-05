@@ -1,6 +1,6 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.Entity.StudentEntity;
+import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.StudentRepo;
 import com.student.studentCrud.service.StudentService;

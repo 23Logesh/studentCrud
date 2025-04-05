@@ -1,6 +1,6 @@
 package com.student.studentCrud.repository;
 
-import com.student.studentCrud.Entity.NotificationEntity;
+import com.student.studentCrud.entity.NotificationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

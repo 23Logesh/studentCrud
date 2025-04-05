@@ -1,6 +1,6 @@
 package com.student.studentCrud.repository;
 
-import com.student.studentCrud.Entity.GradeEntity;
+import com.student.studentCrud.entity.GradeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

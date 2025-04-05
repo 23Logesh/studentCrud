@@ -1,13 +1,11 @@
-package com.student.studentCrud.Entity;
+package com.student.studentCrud.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
-public class NotificationEntity {
+public class GradeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +14,6 @@ public class NotificationEntity {
     @JoinColumn(name = "student_rollNumber")
     private StudentEntity student;
 
-    private String message;
-    private LocalDateTime timestamp;
+    private String subject;
+    private double score;
 }

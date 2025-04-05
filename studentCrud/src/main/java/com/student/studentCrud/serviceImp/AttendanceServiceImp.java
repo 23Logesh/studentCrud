@@ -1,22 +1,27 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.Entity.AttendanceEntity;
-import com.student.studentCrud.Entity.StudentEntity;
+import com.student.studentCrud.entity.AttendanceEntity;
+import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.dto.NotificationDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.AttendanceRepo;
-import com.student.studentCrud.repository.StudentRepo;
 import com.student.studentCrud.service.AttendanceService;
 import com.student.studentCrud.service.NotificationService;
+import com.student.studentCrud.service.StudentService;
 import com.student.studentCrud.util.AttendanceStatus;
+import com.student.studentCrud.util.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,12 +31,14 @@ public class AttendanceServiceImp implements AttendanceService {
     private AttendanceRepo attendanceRepository;
 
     @Autowired
-    private StudentRepo studentRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
     private NotificationService notificationService;
+
+    private StudentService studentService;
+
+
 
     @Override
     public AttendanceDto saveAttendance(AttendanceDto attendanceDto) {
@@ -116,24 +123,68 @@ public class AttendanceServiceImp implements AttendanceService {
 
 
     private void updatePercentageInStudent(Long studentId, double percentage) {
-        studentRepository.findById(studentId).ifPresent(student -> {
-            student.setAttendancePercentage(percentage);
-            studentRepository.save(student);
+        StudentDto studentDto = studentService.findStudent(studentId);
 
+        if (studentDto != null) {
+            studentDto.setAttendancePercentage(percentage);
+
+            studentService.saveStudent(studentDto);
+
+            // Send notification if below 75%
             if (percentage < 75.0) {
                 NotificationDto notification = new NotificationDto();
-                notification.setStudent(modelMapper.map(student, StudentDto.class));
+                notification.setStudent(studentDto); // Already in DTO format
                 notification.setMessage("⚠️ Attendance below 75%. Please take necessary action.");
                 notification.setTimestamp(LocalDateTime.now());
                 notificationService.saveNotification(notification);
             }
-        });
+        }
     }
 
 
+    @Override
+    public ResponseStructure<Map<LocalDate, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year) {
+        // Fetch student DTO (avoid using entity)
+        StudentDto studentDto = studentService.findStudent(rollNumber); // You must have this method already
+
+        // Start and end date of month
+        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(year, month, startDate.toLocalDate().lengthOfMonth(), 23, 59);
+
+        // Fetch attendance records
+        List<AttendanceEntity> monthlyAttendance = attendanceRepository
+                .findByStudentRollNumberAndDateBetween(rollNumber, startDate, endDate);
+
+        // Convert to Map<LocalDate, AttendanceStatus>
+        Map<LocalDate, AttendanceStatus> reportMap = monthlyAttendance.stream()
+                .collect(Collectors.toMap(
+                        AttendanceEntity::getDate,
+                        AttendanceEntity::getStatus
+                ));
+
+        // Prepare message from studentDto
+        String message = "Student Details: " +
+                "Roll No: " + studentDto.getRollNumber() +
+                ", Name: " + studentDto.getName() +
+                ", Email: " + studentDto.getEmail() +
+                ", Class: " + studentDto.getClassName() +
+                ", GPA: " + studentDto.getGpa() +
+                ", Performance: " + studentDto.getPerformanceLevel() +
+                ", Rank: " + studentDto.getRank();
+
+        // Wrap result into ResponseStructure
+        ResponseStructure<Map<LocalDate, AttendanceStatus>> response = new ResponseStructure<>();
+        response.setData(reportMap);
+        response.setMessage(message);
+        response.setStatus(HttpStatus.OK.value());
+
+        return response;
+    }
+
+
+
     private AttendanceEntity convertDtoToEntity(AttendanceDto attendanceDto) {
-        StudentEntity student = studentRepository.findById(attendanceDto.getStudent().getRollNumber())
-                .orElseThrow(() -> new RuntimeException("Student not found with Roll Number: " + attendanceDto.getStudent().getRollNumber()));
+        StudentEntity student = modelMapper.map(attendanceDto.getStudent(),StudentEntity.class);
 
         AttendanceEntity attendanceEntity = modelMapper.map(attendanceDto, AttendanceEntity.class);
         attendanceEntity.setStudent(student);

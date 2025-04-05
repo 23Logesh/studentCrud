@@ -1,7 +1,7 @@
 package com.student.studentCrud.serviceImp;
 
-import com.student.studentCrud.Entity.GradeEntity;
-import com.student.studentCrud.Entity.StudentEntity;
+import com.student.studentCrud.entity.GradeEntity;
+import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.repository.GradeRepo;

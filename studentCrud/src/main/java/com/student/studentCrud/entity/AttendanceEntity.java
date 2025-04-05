@@ -1,4 +1,4 @@
-package com.student.studentCrud.Entity;
+package com.student.studentCrud.entity;
 
 import com.student.studentCrud.util.AttendanceStatus;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ public class AttendanceEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_rollNumber")
+    @JoinColumn(name = "student_roll_number", referencedColumnName = "rollNumber")
     private StudentEntity student;
 
     private LocalDate date;
