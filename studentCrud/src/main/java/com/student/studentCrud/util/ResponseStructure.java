@@ -17,13 +17,13 @@ public class ResponseStructure<T> {
     public <K, V> ResponseStructure<Map<K, V>> getMapResponseStructure(StudentDto studentDto, Map<K, V> reportMap) {
 
         String message = "Student Details: " +
-                "\nRoll No: " + studentDto.getRollNumber() +
-                ",\n Name: " + studentDto.getName() +
-                ",\n Email: " + studentDto.getEmail() +
-                ",\n Class: " + studentDto.getClassName() +
-                ",\n GPA: " + studentDto.getGpa() +
-                ",\n Performance: " + studentDto.getPerformanceLevel() +
-                ",\n Rank: " + studentDto.getRank();
+                "Roll No: " + studentDto.getRollNumber() +
+                ", Name: " + studentDto.getName() +
+                ", Email: " + studentDto.getEmail() +
+                ", Class: " + studentDto.getClassName() +
+                ", GPA: " + studentDto.getGpa() +
+                ", Performance: " + studentDto.getPerformanceLevel() +
+                ", Rank: " + studentDto.getRank();
         ResponseStructure<Map<K, V>> response = new ResponseStructure<>();
         response.setData(reportMap);
         response.setMessage(message);

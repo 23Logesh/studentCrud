@@ -40,7 +40,7 @@ public class GradeController {
         return ResponseEntity.ok(gradeService.updateGrade(gradeDto));
     }
 
-    @PutMapping("/update/score")
+    @PatchMapping("/update/score")
     public ResponseEntity<GradeDto> updateScore(@RequestParam long gradeId, @RequestParam double score) {
         return ResponseEntity.ok(gradeService.updateScore(gradeId, score));
     }
