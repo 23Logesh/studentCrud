@@ -25,7 +25,7 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.findNotificationsByStudent(rollNumber));
     }
 
-    @PutMapping("/update/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<NotificationDto> updateNotification(@PathVariable long id, @RequestParam String message) {
         return ResponseEntity.ok(notificationService.updateNotification(id, message));
     }

@@ -31,6 +31,7 @@ public class NotificationServiceImp implements NotificationService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
     private ResponseStructure<Map<LocalDateTime, String>> responseStructure;
 
     @Override

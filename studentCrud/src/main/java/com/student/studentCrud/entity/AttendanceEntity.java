@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(indexes = @Index(columnList = "student_rollNumber"))
+@Table(indexes = @Index(columnList = "student_rollNumber"), uniqueConstraints = @UniqueConstraint(columnNames = {"student_rollNumber", "date"}))
 public class AttendanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

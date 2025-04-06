@@ -69,11 +69,11 @@ public class AttendanceServiceImp implements AttendanceService {
     }
 
     @Override
-    public AttendanceDto updateAttendanceStatus(long id, String status) {
+    public AttendanceDto updateAttendanceStatus(long id, AttendanceStatus status) {
         AttendanceEntity attendance = getAttendanceById(id);
         if (attendance != null) {
             AttendanceDto attendanceDto = convertEntityToDto(attendance);
-            attendanceDto.setStatus(AttendanceStatus.valueOf(status));
+            attendanceDto.setStatus(status);
             attendanceDto = convertEntityToDto(attendanceRepository.save(convertDtoToEntity(attendanceDto)));
             calculateAttendancePercentageForStudent(attendanceDto.getStudent().getRollNumber());
             return attendanceDto;
@@ -116,8 +116,8 @@ public class AttendanceServiceImp implements AttendanceService {
 
         StudentDto studentDto = studentService.findStudent(rollNumber);
 
-        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(year, month, startDate.toLocalDate().lengthOfMonth(), 23, 59);
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = LocalDate.of(year, month, startDate.lengthOfMonth());
 
         List<AttendanceDto> monthlyAttendance = attendanceRepository
                 .findByStudentRollNumberAndDateBetween(rollNumber, startDate, endDate)
@@ -166,7 +166,7 @@ public class AttendanceServiceImp implements AttendanceService {
             if (percentage < 75.0) {
                 NotificationDto notification = new NotificationDto();
                 notification.setStudent(studentDto);
-                notification.setMessage("⚠️ Attendance below 75%. Please take necessary action.");
+                notification.setMessage("⚠️ Attendance below 75%. Please take necessary action.☹️");
                 notification.setTimestamp(LocalDateTime.now());
                 notificationService.saveNotification(notification);
             }

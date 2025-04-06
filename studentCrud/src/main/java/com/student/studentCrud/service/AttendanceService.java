@@ -14,7 +14,7 @@ public interface AttendanceService {
 
     ResponseStructure<Map<LocalDate, AttendanceStatus>> getAttendanceForStudent(long rollNumber);
 
-    AttendanceDto updateAttendanceStatus(long id, String status);
+    AttendanceDto updateAttendanceStatus(long id, AttendanceStatus status);
 
     AttendanceDto deleteAttendance(long id);
 

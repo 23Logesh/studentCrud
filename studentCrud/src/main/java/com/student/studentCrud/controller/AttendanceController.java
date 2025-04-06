@@ -32,8 +32,8 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceService.getAttendanceForStudent(rollNumber));
     }
 
-    @PutMapping("/update-status/{id}")
-    public ResponseEntity<AttendanceDto> updateAttendanceStatus(@PathVariable long id, @RequestParam String status) {
+    @PatchMapping("/update-status/{id}")
+    public ResponseEntity<AttendanceDto> updateAttendanceStatus(@PathVariable long id, @RequestParam AttendanceStatus status) {
         return ResponseEntity.ok(attendanceService.updateAttendanceStatus(id, status));
     }
 
@@ -57,5 +57,4 @@ public class AttendanceController {
         ResponseStructure<Map<LocalDate, AttendanceStatus>> report = attendanceService.getMonthlyAttendanceReport(rollNumber, month, year);
         return ResponseEntity.ok(report);
     }
-
 }

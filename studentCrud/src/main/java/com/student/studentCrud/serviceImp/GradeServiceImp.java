@@ -1,11 +1,13 @@
 package com.student.studentCrud.serviceImp;
 
 import com.student.studentCrud.dto.GradeDto;
+import com.student.studentCrud.dto.NotificationDto;
 import com.student.studentCrud.dto.StudentDto;
 import com.student.studentCrud.entity.GradeEntity;
 import com.student.studentCrud.entity.StudentEntity;
 import com.student.studentCrud.repository.GradeRepo;
 import com.student.studentCrud.service.GradeService;
+import com.student.studentCrud.service.NotificationService;
 import com.student.studentCrud.service.StudentService;
 import com.student.studentCrud.util.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,9 @@ public class GradeServiceImp implements GradeService {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    NotificationService notificationService;
 
     @Autowired
     private ResponseStructure<Map<String, Double>> responseStructure;
@@ -134,6 +140,11 @@ public class GradeServiceImp implements GradeService {
                 student.setPerformanceLevel("Average");
             } else {
                 student.setPerformanceLevel("Needs Improvement");
+                NotificationDto notification = new NotificationDto();
+                notification.setStudent(student);
+                notification.setMessage("❗Grade below 5GPA. ☹️Please take necessary action.");
+                notification.setTimestamp(LocalDateTime.now());
+                notificationService.saveNotification(notification);
             }
         }
 
