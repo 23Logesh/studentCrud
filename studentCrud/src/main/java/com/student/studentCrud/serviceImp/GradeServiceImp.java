@@ -27,17 +27,13 @@ import java.util.stream.Collectors;
 public class GradeServiceImp implements GradeService {
 
     @Autowired
+    NotificationService notificationService;
+    @Autowired
     private GradeRepo gradeRepo;
-
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private StudentService studentService;
-
-    @Autowired
-    NotificationService notificationService;
-
     @Autowired
     private ResponseStructure<Map<String, Double>> responseStructure;
 
@@ -129,7 +125,7 @@ public class GradeServiceImp implements GradeService {
             student.setPerformanceLevel("Needs Improvement");
         } else {
             double total = grades.stream().mapToDouble(GradeDto::getScore).sum();
-            double gpa = ((total / grades.size())/100.00)*10.00;
+            double gpa = ((total / grades.size()) / 100.00) * 10.00;
             student.setGpa(gpa);
 
             if (gpa >= 9) {
@@ -155,7 +151,7 @@ public class GradeServiceImp implements GradeService {
     public void updateRankForClass(String className) {
         List<StudentDto> studentsInClass = new ArrayList<>(studentService.findStudentsByClassName(className));
 
-        if ( studentsInClass.isEmpty()) {
+        if (studentsInClass.isEmpty()) {
             return;
         }
 
