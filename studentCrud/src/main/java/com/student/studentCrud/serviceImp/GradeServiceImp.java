@@ -47,7 +47,9 @@ public class GradeServiceImp implements GradeService {
             gradeDto = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
             updateRankForClass(gradeDto.getStudent().getClassName());
-            return gradeDto;
+         // Optional<GradeEntity> gradeEntity = gradeRepo.findById(gradeDto.getId());
+         // GradeDto gradeDto1 = convertEntityToDto(gradeEntity.get());
+            return findGrade(gradeDto.getId());
         }
         return null;
     }
