@@ -11,14 +11,12 @@ public interface NotificationService {
 
     void saveNotification(NotificationDto notificationDto);
 
-    ResponseStructure<Map<LocalDateTime, String>> findNotificationsByStudent(long rollNumber);
+    ResponseStructure<Map<String, String>> findNotificationsByStudent(long rollNumber);
 
     NotificationDto updateNotification(long id, String message);
 
     NotificationDto deleteNotification(long id);
 
     List<NotificationDto> findAllNotifications();
-
-    NotificationDto findNotification(long notificationId);
 }
 

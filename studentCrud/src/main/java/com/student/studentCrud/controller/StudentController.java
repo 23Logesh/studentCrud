@@ -63,14 +63,6 @@ public class StudentController {
         return response;
     }
 
-    @PatchMapping("/updateName")
-    public ResponseEntity<StudentDto> updateStudentName(@RequestParam long rollNumber, @RequestParam String studentName) {
-        log.info("[updateStudentName] Received API request to update name for student ID: {} to '{}'", rollNumber, studentName);
-        ResponseEntity<StudentDto> response = ResponseEntity.ok(studentService.updateStudentName(rollNumber, studentName));
-        log.info("[updateStudentName] Response: {}", response.getStatusCode());
-        return response;
-    }
-
     @DeleteMapping("/delete/{rollNumber}")
     public ResponseEntity<StudentDto> deleteStudent(@PathVariable long rollNumber) {
         log.info("[deleteStudent] Received API request to delete student with ID: {}", rollNumber);

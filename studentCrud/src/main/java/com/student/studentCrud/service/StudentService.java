@@ -17,7 +17,6 @@ public interface StudentService {
 
     List<StudentDto> findAllStudent();
 
-    StudentDto updateStudentName(long rollNumber, String studentName);
 
     List<StudentDto> findStudentsByClassName(String className);
 

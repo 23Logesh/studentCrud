@@ -12,7 +12,7 @@ public interface AttendanceService {
 
     AttendanceDto markAttendance(long rollNumber, LocalDate date, AttendanceStatus status);
 
-    ResponseStructure<Map<LocalDate, AttendanceStatus>> getAttendanceForStudent(long rollNumber);
+    ResponseStructure<Map<String, AttendanceStatus>> getAttendanceForStudent(long rollNumber);
 
     AttendanceDto updateAttendanceStatus(long id, AttendanceStatus status);
 
@@ -22,6 +22,6 @@ public interface AttendanceService {
 
     AttendanceDto updateAttendance(AttendanceDto attendanceDto);
 
-    ResponseStructure<Map<LocalDate, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year);
+    ResponseStructure<Map<String, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year);
 
 }

@@ -21,7 +21,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @GetMapping("/student/{rollNumber}")
-    public ResponseEntity<ResponseStructure<Map<LocalDateTime, String>>> getNotificationsByStudent(@PathVariable long rollNumber) {
+    public ResponseEntity<ResponseStructure<Map<String, String>>> getNotificationsByStudent(@PathVariable long rollNumber) {
         return ResponseEntity.ok(notificationService.findNotificationsByStudent(rollNumber));
     }
 
@@ -40,8 +40,5 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.findAllNotifications());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<NotificationDto> getNotification(@PathVariable long id) {
-        return ResponseEntity.ok(notificationService.findNotification(id));
-    }
+
 }

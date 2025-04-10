@@ -41,14 +41,15 @@ public class NotificationServiceImp implements NotificationService {
     }
 
     @Override
-    public ResponseStructure<Map<LocalDateTime, String>> findNotificationsByStudent(long rollNumber) {
+    public ResponseStructure<Map<String, String>> findNotificationsByStudent(long rollNumber) {
         List<NotificationDto> notificationDtoList = notificationRepo.findByStudentRollNumber(rollNumber)
                 .stream()
                 .map(this::convertEntityToDto)
                 .toList();
-        Map<LocalDateTime, String> reportMap = notificationDtoList.stream()
+        Map<String, String> reportMap = notificationDtoList.stream()
                 .collect(Collectors.toMap(
-                        NotificationDto::getTimestamp,
+                        obj->"Notification Id-"+ obj.getId() + ": " + obj.getTimestamp()
+                        ,
                         NotificationDto::getMessage
                 ));
 
@@ -80,7 +81,7 @@ public class NotificationServiceImp implements NotificationService {
                 .toList();
     }
 
-    @Override
+
     public NotificationDto findNotification(long notificationId) {
         return convertEntityToDto(notificationRepo.findById(notificationId).orElse(null));
     }

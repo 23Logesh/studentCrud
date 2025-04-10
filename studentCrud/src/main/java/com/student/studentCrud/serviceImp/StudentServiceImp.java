@@ -67,21 +67,6 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public StudentDto updateStudentName(long rollNumber, String studentName) {
-        return Optional.ofNullable(findStudent(rollNumber))
-                .map(student -> {
-                    student.setName(studentName);
-                    StudentDto updatedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(student)));
-                    log.info("[updateStudentName] SUCCESS - Student ID: {} Name changed to: {}", rollNumber, studentName);
-                    return updatedStudent;
-                })
-                .orElseGet(() -> {
-                    log.warn("[updateStudentName] FAILED - No Student found with ID: {} for name update", rollNumber);
-                    return null;
-                });
-    }
-
-    @Override
     public StudentDto deleteStudent(long rollNumber) {
         return studentRepo.findById(rollNumber)
                 .map(student -> {
@@ -110,6 +95,8 @@ public class StudentServiceImp implements StudentService {
 
     public StudentDto convertEntityToDto(StudentEntity studentEntity) {
         return modelMapper.map(studentEntity, StudentDto.class);
+
+
     }
 
     public StudentEntity convertDtoToEntity(StudentDto studentDto) {

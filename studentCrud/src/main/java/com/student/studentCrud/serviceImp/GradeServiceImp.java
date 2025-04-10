@@ -47,9 +47,8 @@ public class GradeServiceImp implements GradeService {
             gradeDto = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
             updateRankForClass(gradeDto.getStudent().getClassName());
-         // Optional<GradeEntity> gradeEntity = gradeRepo.findById(gradeDto.getId());
-         // GradeDto gradeDto1 = convertEntityToDto(gradeEntity.get());
-            return findGrade(gradeDto.getId());
+            gradeDto.setStudent(studentService.findStudent(rollNumber));
+            return gradeDto;
         }
         return null;
     }
@@ -67,7 +66,8 @@ public class GradeServiceImp implements GradeService {
             GradeDto updatedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
             updateRankForClass(gradeDto.getStudent().getClassName());
-            return updatedGrade;
+            gradeDto.setStudent(studentService.findStudent(gradeDto.getStudent().getRollNumber()));
+            return gradeDto;
         } else {
             return null;
         }
@@ -81,7 +81,9 @@ public class GradeServiceImp implements GradeService {
 
         Map<String, Double> reportMap = gradeDtoList.stream()
                 .collect(Collectors.toMap(
-                        GradeDto::getSubject,
+                        obj->{
+                            return  "GradeId-"+ obj.getId() + ": " + obj.getSubject();
+                        },
                         GradeDto::getScore
                 ));
 
@@ -99,6 +101,7 @@ public class GradeServiceImp implements GradeService {
             GradeDto updatedGrade = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());
             updateRankForClass(gradeDto.getStudent().getClassName());
+            updatedGrade.setStudent(studentService.findStudent(updatedGrade.getStudent().getRollNumber()));
             return updatedGrade;
         } else {
             return null;

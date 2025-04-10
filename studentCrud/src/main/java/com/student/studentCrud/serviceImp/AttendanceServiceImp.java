@@ -53,15 +53,15 @@ public class AttendanceServiceImp implements AttendanceService {
     }
 
     @Override
-    public ResponseStructure<Map<LocalDate, AttendanceStatus>> getAttendanceForStudent(long rollNumber) {
+    public ResponseStructure<Map<String, AttendanceStatus>> getAttendanceForStudent(long rollNumber) {
         List<AttendanceDto> attendanceDtoList = attendanceRepository.findByStudentRollNumber(rollNumber)
                 .stream()
                 .map(this::convertEntityToDto)
                 .toList();
 
-        Map<LocalDate, AttendanceStatus> reportMap = attendanceDtoList.stream()
+        Map<String, AttendanceStatus> reportMap = attendanceDtoList.stream()
                 .collect(Collectors.toMap(
-                        AttendanceDto::getDate,
+                        obj->"Attendance Id- "+obj.getId()+": "+obj.getDate(),
                         AttendanceDto::getStatus
                 ));
 
@@ -112,7 +112,7 @@ public class AttendanceServiceImp implements AttendanceService {
     }
 
     @Override
-    public ResponseStructure<Map<LocalDate, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year) {
+    public ResponseStructure<Map<String, AttendanceStatus>> getMonthlyAttendanceReport(long rollNumber, int month, int year) {
 
         StudentDto studentDto = studentService.findStudent(rollNumber);
 
@@ -123,9 +123,9 @@ public class AttendanceServiceImp implements AttendanceService {
                 .findByStudentRollNumberAndDateBetween(rollNumber, startDate, endDate)
                 .stream().map(this::convertEntityToDto).toList();
 
-        Map<LocalDate, AttendanceStatus> reportMap = monthlyAttendance.stream()
+        Map<String, AttendanceStatus> reportMap = monthlyAttendance.stream()
                 .collect(Collectors.toMap(
-                        AttendanceDto::getDate,
+                        obj->"Attendance Id- "+obj.getId()+": "+obj.getDate(),
                         AttendanceDto::getStatus
                 ));
 

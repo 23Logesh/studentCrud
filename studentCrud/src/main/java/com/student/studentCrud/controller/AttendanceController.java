@@ -28,7 +28,7 @@ public class AttendanceController {
     }
 
     @GetMapping("/student/{rollNumber}")
-    public ResponseEntity<ResponseStructure<Map<LocalDate, AttendanceStatus>>> getAttendanceByStudent(@PathVariable long rollNumber) {
+    public ResponseEntity<ResponseStructure<Map<String, AttendanceStatus>>> getAttendanceByStudent(@PathVariable long rollNumber) {
         return ResponseEntity.ok(attendanceService.getAttendanceForStudent(rollNumber));
     }
 
@@ -53,8 +53,8 @@ public class AttendanceController {
     }
 
     @GetMapping("/monthly-report")
-    public ResponseEntity<ResponseStructure<Map<LocalDate, AttendanceStatus>>> getMonthlyReport(@RequestParam long rollNumber, @RequestParam int month, @RequestParam int year) {
-        ResponseStructure<Map<LocalDate, AttendanceStatus>> report = attendanceService.getMonthlyAttendanceReport(rollNumber, month, year);
+    public ResponseEntity<ResponseStructure<Map<String, AttendanceStatus>>> getMonthlyReport(@RequestParam long rollNumber, @RequestParam int month, @RequestParam int year) {
+        ResponseStructure<Map<String, AttendanceStatus>> report = attendanceService.getMonthlyAttendanceReport(rollNumber, month, year);
         return ResponseEntity.ok(report);
     }
 }

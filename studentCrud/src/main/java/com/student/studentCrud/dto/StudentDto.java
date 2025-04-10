@@ -2,6 +2,8 @@ package com.student.studentCrud.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class StudentDto {
 
