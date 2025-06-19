@@ -125,7 +125,7 @@ public class AttendanceServiceImp implements AttendanceService {
 
         Map<String, AttendanceStatus> reportMap = monthlyAttendance.stream()
                 .collect(Collectors.toMap(
-                        obj->"Attendance Id- "+obj.getId()+": "+obj.getDate(),
+                        obj->"Attendance Id - "+obj.getId()+": "+obj.getDate(),
                         AttendanceDto::getStatus
                 ));
 

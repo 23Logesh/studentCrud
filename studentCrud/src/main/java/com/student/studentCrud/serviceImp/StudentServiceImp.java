@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -23,12 +24,21 @@ public class StudentServiceImp implements StudentService {
     @Autowired
     private ModelMapper modelMapper;
 
+
     @Override
     public StudentDto saveStudent(StudentDto studentDto) {
 
         StudentDto savedStudent = convertEntityToDto(studentRepo.save(convertDtoToEntity(studentDto)));
         log.info("[saveStudent] SUCCESS - Student saved with ID: {}, Name: {}", savedStudent.getRollNumber(), savedStudent.getName());
         return savedStudent;
+    }
+    @Override
+    public StudentDto saveStudent(String name, String email, String className) {
+        StudentDto studentDto = new StudentDto();
+        studentDto.setName(name.trim());
+        studentDto.setEmail(email.trim());
+        studentDto.setClassName(className.trim().toLowerCase(Locale.ROOT));
+        return saveStudent(studentDto);
     }
 
     @Override
@@ -82,7 +92,7 @@ public class StudentServiceImp implements StudentService {
 
     public List<StudentDto> findStudentsByClassName(String className) {
 
-        List<StudentDto> studentsInClass = studentRepo.findByClassName(className).stream().map(this::convertEntityToDto).toList();
+        List<StudentDto> studentsInClass = studentRepo.findByClassName(className.trim().toLowerCase(Locale.ROOT)).stream().map(this::convertEntityToDto).toList();
         return studentsInClass.stream()
                 .map(student -> modelMapper.map(student, StudentDto.class))
                 .toList();
@@ -90,7 +100,7 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public List<StudentDto> findTop3Rank(String className) {
-        return studentRepo.findByTop3Rank(className).stream().map(this::convertEntityToDto).toList();
+        return studentRepo.findByTop3Rank(className.trim().toLowerCase(Locale.ROOT)).stream().map(this::convertEntityToDto).toList();
     }
 
     public StudentDto convertEntityToDto(StudentEntity studentEntity) {

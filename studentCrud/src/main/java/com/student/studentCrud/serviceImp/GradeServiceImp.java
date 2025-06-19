@@ -42,7 +42,7 @@ public class GradeServiceImp implements GradeService {
         GradeDto gradeDto = new GradeDto();
         gradeDto.setStudent(studentService.findStudent(rollNumber));
         if (gradeDto.getStudent() != null) {
-            gradeDto.setSubject(subject);
+            gradeDto.setSubject(subject.trim());
             gradeDto.setScore(score);
             gradeDto = convertEntityToDto(gradeRepo.save(convertDtoToEntity(gradeDto)));
             calculateGPAAndPerformance(gradeDto.getStudent().getRollNumber());

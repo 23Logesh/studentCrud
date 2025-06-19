@@ -3,12 +3,12 @@ package com.student.studentCrud.controller;
 import com.student.studentCrud.dto.NotificationDto;
 import com.student.studentCrud.service.NotificationService;
 import com.student.studentCrud.util.ResponseStructure;
+import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class NotificationController {
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<NotificationDto> updateNotification(@PathVariable long id, @RequestParam String message) {
+    public ResponseEntity<NotificationDto> updateNotification(@PathVariable long id, @RequestParam @NotBlank String message) {
         return ResponseEntity.ok(notificationService.updateNotification(id, message));
     }
 

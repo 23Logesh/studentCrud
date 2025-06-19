@@ -59,7 +59,7 @@ public class NotificationServiceImp implements NotificationService {
     @Override
     public NotificationDto updateNotification(long id, String message) {
         NotificationDto notification = findNotification(id);
-        notification.setMessage(message);
+        notification.setMessage(message.trim());
         return convertEntityToDto(notificationRepo.save(convertDtoToEntity(notification)));
     }
 

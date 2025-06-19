@@ -4,8 +4,11 @@ import com.student.studentCrud.dto.AttendanceDto;
 import com.student.studentCrud.service.AttendanceService;
 import com.student.studentCrud.util.AttendanceStatus;
 import com.student.studentCrud.util.ResponseStructure;
+import jakarta.validation.Valid;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +46,7 @@ public class AttendanceController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<AttendanceDto> updateAttendance(@RequestBody AttendanceDto attendanceDto) {
+    public ResponseEntity<AttendanceDto> updateAttendance(@RequestBody @Valid AttendanceDto attendanceDto) {
         return ResponseEntity.ok(attendanceService.updateAttendance(attendanceDto));
     }
 

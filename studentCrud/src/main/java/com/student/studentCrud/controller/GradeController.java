@@ -3,6 +3,9 @@ package com.student.studentCrud.controller;
 import com.student.studentCrud.dto.GradeDto;
 import com.student.studentCrud.service.GradeService;
 import com.student.studentCrud.util.ResponseStructure;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,7 @@ public class GradeController {
     private GradeService gradeService;
 
     @PostMapping("/save")
-    public ResponseEntity<GradeDto> saveGrade(long rollNumber, String subject, double score) {
+    public ResponseEntity<GradeDto> saveGrade(long rollNumber, @NotBlank String subject,@PositiveOrZero double score) {
         return ResponseEntity.ok(gradeService.saveGrade(rollNumber, subject, score));
     }
 
@@ -36,12 +39,12 @@ public class GradeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<GradeDto> updateGrade(@RequestBody GradeDto gradeDto) {
+    public ResponseEntity<GradeDto> updateGrade(@RequestBody @Valid GradeDto gradeDto) {
         return ResponseEntity.ok(gradeService.updateGrade(gradeDto));
     }
 
     @PatchMapping("/update/score")
-    public ResponseEntity<GradeDto> updateScore(@RequestParam long gradeId, @RequestParam double score) {
+    public ResponseEntity<GradeDto> updateScore(@RequestParam long gradeId, @RequestParam @PositiveOrZero double score) {
         return ResponseEntity.ok(gradeService.updateScore(gradeId, score));
     }
 
