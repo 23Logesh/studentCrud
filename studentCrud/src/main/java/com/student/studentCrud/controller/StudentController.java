@@ -18,6 +18,7 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @RequestMapping("/student")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StudentController {
 
     @Autowired
@@ -50,7 +51,7 @@ public class StudentController {
     }
 
     @GetMapping("/findTop3Rank")
-    public ResponseEntity<List<StudentDto>> findTop3Rank(@RequestParam("class Name") @NotBlank String className) {
+    public ResponseEntity<List<StudentDto>> findTop3Rank(@RequestParam("className") @NotBlank String className) {
         log.info("[findTop3Student] Received API request to retrieve top 3 student for class: {}", className);
         ResponseEntity<List<StudentDto>> response = ResponseEntity.ok(studentService.findTop3Rank(className));
         List<StudentDto> students = response.getBody();

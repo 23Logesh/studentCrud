@@ -100,7 +100,7 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public List<StudentDto> findTop3Rank(String className) {
-        return studentRepo.findByTop3Rank(className.trim().toLowerCase(Locale.ROOT)).stream().map(this::convertEntityToDto).toList();
+        return studentRepo.findTop3ByClassNameExcludingZeroRank(className.trim().toLowerCase(Locale.ROOT)).stream().map(this::convertEntityToDto).toList();
     }
 
     public StudentDto convertEntityToDto(StudentEntity studentEntity) {

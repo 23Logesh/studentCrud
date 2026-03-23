@@ -13,6 +13,9 @@ public interface StudentRepo extends JpaRepository<StudentEntity, Long> {
 
     List<StudentEntity> findByClassName(String className);
 
-    @Query(value = "SELECT * FROM student_entity WHERE class_name = :className AND `rank` IN (SELECT `rank` FROM (SELECT DISTINCT `rank` FROM student_entity WHERE class_name = :className ORDER BY `rank` ASC LIMIT 3) AS top_ranks) ORDER BY `rank` ASC;", nativeQuery = true)
-    List<StudentEntity> findByTop3Rank(@Param("className") String className);
+    @Query(
+            value = "SELECT * FROM student_entity s WHERE s.class_name = :className AND s.rank <> 0 ORDER BY s.rank ASC LIMIT 3",
+            nativeQuery = true
+    )
+    List<StudentEntity> findTop3ByClassNameExcludingZeroRank(@Param("className") String className);
 }

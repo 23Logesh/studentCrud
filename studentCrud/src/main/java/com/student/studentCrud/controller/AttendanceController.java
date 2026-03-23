@@ -19,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/attendance")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 public class AttendanceController {
 
     @Autowired

@@ -65,7 +65,7 @@ public class AttendanceServiceImp implements AttendanceService {
                         AttendanceDto::getStatus
                 ));
 
-        return responseStructure.getMapResponseStructure(attendanceDtoList.getFirst().getStudent(), reportMap);
+        return responseStructure.getMapResponseStructure(attendanceDtoList.get(0).getStudent(), reportMap);
     }
 
     @Override
@@ -152,6 +152,7 @@ public class AttendanceServiceImp implements AttendanceService {
                 .count();
 
         double percentage = (presentDays * 100.0) / totalDays;
+        percentage = Math.round(percentage * 100.0) / 100.0;
         updatePercentageInStudent(studentId, percentage);
     }
 

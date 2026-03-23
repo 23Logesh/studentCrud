@@ -17,6 +17,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("/grade")
+@CrossOrigin(origins = "http://localhost:4200")
 public class GradeController {
 
     @Autowired

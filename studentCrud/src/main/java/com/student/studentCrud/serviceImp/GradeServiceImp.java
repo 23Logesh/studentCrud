@@ -131,6 +131,7 @@ public class GradeServiceImp implements GradeService {
         } else {
             double total = grades.stream().mapToDouble(GradeDto::getScore).sum();
             double gpa = ((total / grades.size()) / 100.00) * 10.00;
+            gpa = Math.round(gpa * 100.0) / 100.0;
             student.setGpa(gpa);
 
             if (gpa >= 9) {
