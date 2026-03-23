@@ -1,0 +1,155 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-white p-8">
+
+  <!-- PROFILE CARD -->
+  <div class="max-w-6xl mx-auto bg-white/70 backdrop-blur-xl
+              rounded-3xl shadow-2xl p-10 mb-12
+              border border-white/40 animate-fade-in-up">
+
+    <!-- Header -->
+    <div class="flex items-center gap-6 mb-10">
+
+      <div class="w-20 h-20 rounded-full
+                  bg-gradient-to-r from-blue-600 to-purple-600
+                  flex items-center justify-center
+                  text-white text-2xl font-bold shadow-xl">
+        {{ student?.name?.charAt(0) }}
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-extrabold
+                   bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500
+                   bg-clip-text text-transparent">
+          {{ student?.name }}
+        </h2>
+        <p class="text-gray-500">{{ student?.email }}</p>
+        <p class="text-sm text-gray-400">
+          Class: {{ student?.className }}
+        </p>
+      </div>
+
+    </div>
+
+    <!-- STATS -->
+    <div *ngIf="student" class="grid md:grid-cols-3 gap-10">
+
+      <!-- GPA -->
+      <div class="stat-advanced blue">
+        <p class="stat-title">GPA</p>
+        <p class="stat-value">
+          {{ student.gpa }} {{ student.performanceLevel }}
+        </p>
+
+        <div class="w-full bg-gray-200 rounded-full h-2 mt-4 overflow-hidden">
+          <div class="bg-blue-600 h-2 rounded-full transition-all duration-1000"
+               [style.width.%]="student.gpa * 10">
+          </div>
+        </div>
+      </div>
+
+      <!-- Rank -->
+      <div class="stat-advanced purple">
+        <p class="stat-title">Rank</p>
+        <p class="stat-value">#{{ student.rank }}</p>
+        <p class="text-xs opacity-80 mt-3">Top performer 🎖️</p>
+      </div>
+
+      <!-- Attendance -->
+      <div class="stat-advanced pink">
+        <p class="stat-title">Attendance</p>
+        <p class="stat-value">
+          {{ student.attendancePercentage }}%
+        </p>
+
+        <div class="w-full bg-gray-200 rounded-full h-2 mt-4 overflow-hidden">
+          <div class="bg-pink-500 h-2 rounded-full transition-all duration-1000"
+               [style.width.%]="student.attendancePercentage">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="flex flex-wrap gap-4 mt-10">
+      <button (click)="goToGrades()" class="pro-btn glow-blue">
+        Manage Grades
+      </button>
+
+      <button (click)="goToAttendance()" class="pro-btn glow-purple">
+        Manage Attendance
+      </button>
+
+      <button (click)="goToNotifications()" class="pro-btn glow-pink">
+        Manage Notifications
+      </button>
+    </div>
+
+  </div>
+
+  <!-- DATA SECTIONS -->
+  <div class="max-w-6xl mx-auto space-y-10">
+
+    <!-- GRADES -->
+    <div class="data-card animate-fade-in-up delay-100">
+      <h3 class="section-title">📘 Grades</h3>
+
+      <div *ngIf="grades?.length; else noGrades"
+           class="max-h-64 overflow-y-auto pr-2 custom-scroll">
+        <ul class="space-y-3">
+          <li *ngFor="let g of grades" class="data-row">
+            <span>{{ g.subject }}</span>
+            <span class="font-semibold text-blue-600">
+              {{ g.score }}
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <ng-template #noGrades>
+        <p class="text-gray-400 text-sm">
+          No grades available.
+        </p>
+      </ng-template>
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div class="data-card animate-fade-in-up delay-200">
+      <h3 class="section-title">📅 Attendance</h3>
+
+      <div class="max-h-64 overflow-y-auto pr-2 custom-scroll">
+        <ul class="space-y-3">
+          <li *ngFor="let a of attendance" class="data-row">
+            <span>{{ a.date }}</span>
+            <span [ngClass]="{
+                    'text-green-600': a.status === 'Present',
+                    'text-red-600': a.status === 'Absent'
+                  }"
+                  class="font-semibold">
+              {{ a.status }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="data-card animate-fade-in-up delay-300">
+      <h3 class="section-title">🔔 Notifications</h3>
+
+      <div class="max-h-64 overflow-y-auto pr-2 custom-scroll">
+        <ul class="space-y-3">
+          <li *ngFor="let n of notifications" class="data-row">
+            <span class="text-gray-500 text-sm">
+              {{ n.timestamp }}
+            </span>
+            <span class="font-medium">
+              {{ n.message }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>

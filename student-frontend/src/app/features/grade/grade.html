@@ -1,0 +1,108 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-white p-8">
+
+  <div class="max-w-5xl mx-auto space-y-10">
+
+    <!-- HEADER CARD -->
+    <div class="glass-card animate-fade-in-up">
+
+      <h2 class="text-2xl font-bold mb-6
+                 bg-gradient-to-r from-blue-600 to-purple-600
+                 bg-clip-text text-transparent">
+        📘 Student Grades
+      </h2>
+
+      <div class="flex flex-wrap gap-4 items-center">
+
+        <input type="number"
+               [(ngModel)]="rollNumber"
+               placeholder="Enter Roll Number"
+               class="input-field w-64">
+
+        <button (click)="loadGrades()"
+                class="pro-btn glow-blue">
+          Load Grades
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- GRADE LIST -->
+    <div class="glass-card animate-fade-in-up delay-100">
+
+      <h3 class="section-title">Grade Records</h3>
+
+      <div class="max-h-80 overflow-y-auto pr-2 custom-scroll">
+
+        <div *ngFor="let grade of gradeList"
+             class="flex flex-wrap items-center justify-between
+                    bg-white rounded-2xl shadow-md p-4 mb-4
+                    hover:scale-[1.02] transition-all duration-300">
+
+          <!-- Subject -->
+          <div class="font-medium text-gray-700 w-40">
+            {{ grade.subject }}
+          </div>
+
+          <!-- Score with color -->
+          <div class="w-20 text-center font-semibold"
+               [ngClass]="{
+                'text-green-600': grade.score >= 75,
+                'text-yellow-600': grade.score >= 50 && grade.score < 75,
+                'text-red-600': grade.score < 50
+               }">
+            {{ grade.score }}
+          </div>
+
+          <!-- Update Score Input -->
+          <input #newScore
+                 type="number"
+                 placeholder="New score"
+                 class="input-field w-32 py-2">
+
+          <!-- Update Button -->
+          <button (click)="updateGradeScore(grade.gradeId, +newScore.value)"
+                  class="mini-btn blue">
+            Update
+          </button>
+
+          <!-- Delete Button -->
+          <button (click)="deleteGrade(grade.gradeId)"
+                  class="mini-btn red">
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ADD GRADE -->
+    <div class="glass-card animate-fade-in-up delay-200">
+
+      <h3 class="section-title">Add Grade</h3>
+
+      <div class="flex flex-wrap gap-4 items-center">
+
+        <input [(ngModel)]="newSubject"
+               placeholder="Subject"
+               class="input-field w-48">
+
+        <input type="number"
+               [(ngModel)]="newScore"
+               placeholder="Score"
+               class="input-field w-32">
+
+        <button (click)="addGrade()"
+                class="pro-btn glow-purple">
+          Add Grade
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

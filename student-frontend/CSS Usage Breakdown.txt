@@ -1,0 +1,41 @@
+
+
+CSS Usage Breakdown
+
+
+
+| Feature / Selector                                             | Tailwind Used? | Notes                                                                 |
+| -------------------------------------------------------------- | -------------- | --------------------------------------------------------------------- |
+| `@import "tailwindcss"`                                        | ✅ Yes          | Base Tailwind library import                                          |
+
+| `@layer utilities { .delay-100 … }`                            | ✅ Yes          | Custom utilities built on Tailwind `@layer`                           |
+
+| `.animated-bg`                                                 | ⚪ Custom       | Gradient + animation; Tailwind handles colors but animation is custom |
+
+| `.glass-card`                                                  | ✅ + ⚪          | Uses Tailwind classes via `@apply` and custom blur/opacity            |
+
+| `.label`, `.input-field`                                       | ✅ Yes          | Tailwind utilities applied with `@apply`                              |
+
+| `.pro-btn`                                                     | ✅ + ⚪          | Tailwind classes + custom hover transform & box-shadow                |
+
+| `.table-wrapper`, `.table-head`, `.th`, `.td`, `.table-row`    | ✅ + ⚪          | Tailwind applied; custom hover/scale for `.table-row`                 |
+
+| `.mini-btn`                                                    | ✅ + ⚪          | Tailwind + custom scale hover                                         |
+
+| `.modal-overlay`, `.modal-box`                                 | ✅ + ⚪          | Tailwind for layout + custom fade/scale animations                    |
+
+| `.top-card`                                                    | ✅ + ⚪          | Tailwind + hover transform/scale animation                            |
+
+| `.animate-fade-in`, `.animate-scale-in`, `.animate-fade-in-up` | ⚪ Custom       | Fully custom keyframe animations                                      |
+
+| `.nav-link`, `.active-link`                                    | ✅ + ⚪          | Tailwind + sliding underline & gradient styles                        |
+
+| `.stat-card`, `.stat-advanced`                                 | ✅ + ⚪          | Tailwind classes + hover scale & transform effects                    |
+
+| `.data-card`, `.section-title`, `.data-row`                    | ✅ + ⚪          | Tailwind for spacing/typography + custom backdrop blur & hover        |
+
+| `.glow-*`                                                      | ⚪ Custom       | Box-shadow glow on hover                                              |
+
+| `.custom-scroll`                                               | ⚪ Custom       | Scrollbar styling via pure CSS pseudo-elements                        |
+
+`

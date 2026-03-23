@@ -1,0 +1,116 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-white p-8">
+
+  <div class="max-w-5xl mx-auto space-y-10">
+
+    <!-- HEADER CARD -->
+    <div class="glass-card animate-fade-in-up">
+
+      <h2 class="text-2xl font-bold mb-6
+                 bg-gradient-to-r from-blue-600 to-purple-600
+                 bg-clip-text text-transparent">
+        📅 Student Attendance
+      </h2>
+
+      <div class="flex flex-wrap gap-4 items-center">
+
+        <input type="number"
+               [(ngModel)]="rollNumber"
+               placeholder="Enter Roll Number"
+               class="input-field w-64">
+
+        <button (click)="loadAttendance()"
+                class="pro-btn glow-blue">
+          Load
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ATTENDANCE LIST -->
+    <div class="glass-card animate-fade-in-up delay-100">
+
+      <h3 class="section-title">Attendance Records</h3>
+
+      <div class="max-h-80 overflow-y-auto pr-2 custom-scroll">
+
+        <div *ngFor="let att of attendanceList"
+             class="flex flex-wrap items-center justify-between
+                    bg-white rounded-2xl shadow-md p-4 mb-4
+                    hover:scale-[1.02] transition-all duration-300">
+
+          <!-- Date -->
+          <div class="font-medium text-gray-700 w-32">
+            {{ att.date }}
+          </div>
+
+          <!-- Status Badge -->
+          <div class="w-28 text-center font-semibold"
+               [ngClass]="{
+                'text-green-600': att.status === 'PRESENT',
+                'text-red-600': att.status === 'ABSENT',
+                'text-yellow-600': att.status === 'LATE'
+               }">
+            {{ att.status }}
+          </div>
+
+          <!-- Update Select -->
+          <select #newStatus
+                  class="input-field w-36 py-2">
+
+            <option value="PRESENT">PRESENT</option>
+            <option value="ABSENT">ABSENT</option>
+            <option value="LATE">LATE</option>
+
+          </select>
+
+          <!-- Update Button -->
+          <button (click)="updateAttendanceStatus(att.id, newStatus.value)"
+                  class="mini-btn blue">
+            Update
+          </button>
+
+          <!-- Delete Button -->
+          <button (click)="deleteAttendance(att.id)"
+                  class="mini-btn red">
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MARK ATTENDANCE -->
+    <div class="glass-card animate-fade-in-up delay-200">
+
+      <h3 class="section-title">Mark Attendance</h3>
+
+      <div class="flex flex-wrap gap-4 items-center">
+
+        <input type="date"
+               [(ngModel)]="date"
+               class="input-field w-48">
+
+        <select [(ngModel)]="status"
+                class="input-field w-40">
+
+          <option value="PRESENT">Present</option>
+          <option value="ABSENT">Absent</option>
+          <option value="LATE">Late</option>
+
+        </select>
+
+        <button (click)="markAttendance()"
+                class="pro-btn glow-purple">
+          Mark Attendance
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
